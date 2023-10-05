@@ -16,6 +16,11 @@ These could include visualizing the results for a binary classifier, for which p
 
 > TBD! Here, each new plot should be rendered and included as a small reference.
 
+
+<img src="/calibration_plot.png" alt="Calibration Plot" style="height: 300px; width:300px;"/>
+
+
+
 # Other resources
 
 Why create everything from scratch, if some things exist already? Here are some helpful resources.
