@@ -5,7 +5,8 @@ The repository will contain a collection of useful, useable, and reuseable plots
 I know, ChatGPT is your friend and helper and with the right prompt can create any graph you would like to have. 
 However, it is very helpful to configure everything once and properly and only finetune the detail is necessary.
 
-So there is a collection for different types of plots and graphs. Some might great for visualizing data in general such as raincloud graphs or ridgeline plots while others might be more suitable for specific use cases. 
+So there is a collection for different types of plots and graphs. 
+Some might be great for visualizing data in general such as raincloud graphs or ridgeline plots while others might be more suitable for specific use cases. 
 These could include visualizing the results for a binary classifier, for which plots such as a confusion matrix or a callibration plot can be created.
 
 # Overview of graphs and plots
