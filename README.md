@@ -12,24 +12,52 @@ These could include visualizing the results for a binary classifier, for which p
 # Overview of graphs and plots
 >  TBD!
 
+>- **binary classifier**
+>    - Accuracy
+>    - Calibration Curve
+>    - Classification Report
+>    - Confusion Matrix
+>    - ROC curve (AUROC)
+>    - y_prob histogram
+
+
+>- **comparing distributions**
+>    - raincloud plot
+
 # Gallery
 
 > TBD! Here, each new plot should be rendered and included as a small reference.
 
-
-<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 300px; margin: 5px;">
-  <img src="/images/calibration_plot.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
-  <p>Calibration Plot</p>
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 310px; height: 350px; margin: 5px; vertical-align: top;">
+  <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+    <img src="/images/calibration_plot.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  </div>
+  <p>Calibration Curve</p>
 </div>
-<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 300px; margin: 5px;">
-  <img src="/images/calibration_plot.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
-  <p>Calibration Plot</p>
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 310px; height: 350px; margin: 5px; vertical-align: top;">
+  <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+    <img src="/images/classification_report.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  </div>
+  <p>Classification Report</p>
 </div>
-<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 300px; margin: 5px;">
-  <img src="/images/calibration_plot.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
-  <p>Calibration Plot</p>
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 310px; height: 350px; margin: 5px; vertical-align: top;">
+  <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+    <img src="/images/confusion_matrix.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  </div>
+  <p>Confusion Matrix</p>
 </div>
-
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 310px; height: 350px; margin: 5px; vertical-align: top;">
+  <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+    <img src="/images/roc_curve.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  </div>
+  <p>ROC Curve (AUROC)</p>
+</div>
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 310px; height: 350px; margin: 5px; vertical-align: top;">
+  <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+    <img src="/images/y_prob_histogram.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  </div>
+  <p>y_prob histogram</p>
+</div>
 
 
 
