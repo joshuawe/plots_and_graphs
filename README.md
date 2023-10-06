@@ -1,5 +1,6 @@
 # Plots and Graphs
 
+
 The repository will contain a collection of useful, useable, and reuseable plots and graphs.
 
 I know, ChatGPT is your friend and helper and with the right prompt can create any graph you would like to have. 
@@ -76,3 +77,8 @@ fig.savefig('calibration_plot.png', bbox_inches='tight')
 
 # Requirements
 > Show all requirements
+
+
+## Contributors
+
+![Contributors](https://contrib.rocks/image?repo=joshuawe/plots_and_graphs)
