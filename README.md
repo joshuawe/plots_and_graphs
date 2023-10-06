@@ -1,4 +1,4 @@
-# Plots and Graphs
+# Plots and Graphs 
 
 [![GitHub commits](https://badgen.net/github/commits/joshuawe/plots_and_graphs)](https://GitHub.com/joshuawe/plots_and_graphs/commits)
 [![GitHub contributors](https://img.shields.io/github/contributors/joshuawe/plots_and_graphs.svg)](https://GitHub.com/Naereen/badges/graphs/contributors/)
