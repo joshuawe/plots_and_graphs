@@ -17,7 +17,21 @@ These could include visualizing the results for a binary classifier, for which p
 > TBD! Here, each new plot should be rendered and included as a small reference.
 
 
-<img src="/calibration_plot.png" alt="Calibration Plot" style="height: 300px; width:300px;"/>
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 300px; margin: 5px;">
+  <img src="/images/calibration_plot.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  <p>Calibration Plot</p>
+</div>
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 300px; margin: 5px;">
+  <img src="/images/calibration_plot.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  <p>Calibration Plot</p>
+</div>
+<div style="display: inline-block; text-align: center; border: 1px solid #ccc; width: 300px; margin: 5px;">
+  <img src="/images/calibration_plot.png" alt="Your Image" style="max-width: 300px; max-height: 300px;">
+  <p>Calibration Plot</p>
+</div>
+
+
+
 
 
 
@@ -25,5 +39,5 @@ These could include visualizing the results for a binary classifier, for which p
 
 Why create everything from scratch, if some things exist already? Here are some helpful resources.
 
-+ [Python Graph Gallery](https://python-graph-gallery.com) - great collection of graphs. Check out their '[BEST](https://python-graph-gallery.com/best-python-chart-examples/)' collection for inspiration.
++ [Python Graph Gallery](https://python-graph-gallery.com) - great collection of graphs. First look at their gallery, then check out their '[BEST](https://python-graph-gallery.com/best-python-chart-examples/)' collection for inspiration.
 + [Scientific Visualization Book](https://github.com/rougier/scientific-visualization-book) - definitely check out the first part for essential tips for good graphs. And deep dive further to improve your visualization game.
