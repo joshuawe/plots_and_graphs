@@ -1,5 +1,11 @@
 # Plots and Graphs
 
+[![GitHub commits](https://badgen.net/github/commits/joshuawe/plots_and_graphs)](https://GitHub.com/joshuawe/plots_and_graphs/commits)
+[![GitHub contributors](https://img.shields.io/github/contributors/joshuawe/plots_and_graphs.svg)](https://GitHub.com/Naereen/badges/graphs/contributors/)
+[![GitHub issues](https://badgen.net/github/issues/joshuawe/plots_and_graphs/)](https://GitHub.com/joshuawe/plots_and_graphs/issues/)
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
+[![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+
 
 The repository will contain a collection of useful, useable, and reuseable plots and graphs.
 
