@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import pandas as pd
 from typing import List, Tuple
 
@@ -43,9 +44,13 @@ def plot_raincloud(df: pd.DataFrame,
         order = df[y_col].unique()
 
     # if colors are none, use distinct colors for each group
-    cmap = plt.get_cmap('tab10')
-    colors = [cmap(i) for i in np.linspace(0, 1, len(order))]
-
+    if colors is None:
+        cmap = plt.get_cmap('tab10')
+        colors = [mpl.colors.to_hex(cmap(i)) for i in np.linspace(0, 1, len(order))]
+    else:
+        assert len(colors) == len(order), 'colors and order must be the same length'
+        colors = colors
+        
     # Boxplot
     if show_boxplot:
         bp = ax.boxplot([df[df[y_col] == grp][x_col].values for grp in order],
@@ -77,7 +82,7 @@ def plot_raincloud(df: pd.DataFrame,
             y = np.full(len(features), idx + 1 - offset)
             jitter_amount = 0.12
             y += np.random.uniform(low=-jitter_amount, high=jitter_amount, size=len(y))
-            plt.scatter(features, y, s=10, c=np.array([colors[idx]]).reshape(1,-1), alpha=0.3, facecolors='none')
+            plt.scatter(features, y, s=10, c=colors[idx], alpha=0.3, facecolors='none')
 
     # Labels
     plt.yticks(np.arange(1, len(order) + 1), order)
