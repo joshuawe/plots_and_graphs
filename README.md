@@ -1,4 +1,9 @@
-# Plots and Graphs 
+<p align="center">
+ <img width="300px" src="images/logo.png" align="center" alt="Plots and Graphs" />
+ <h2 align="center">Plots and graphs</h2>
+ <p align="center">Save your time. Create plots and graphs that look nice. </p>
+</p>
+
 
 [![GitHub commits](https://badgen.net/github/commits/joshuawe/plots_and_graphs)](https://GitHub.com/joshuawe/plots_and_graphs/commits)
 [![GitHub contributors](https://img.shields.io/github/contributors/joshuawe/plots_and_graphs.svg)](https://GitHub.com/Naereen/badges/graphs/contributors/)
@@ -19,17 +24,17 @@ These could include visualizing the results for a binary classifier, for which p
 # Overview of graphs and plots
 >  TBD!
 
->- **binary classifier**
->    - Accuracy
->    - Calibration Curve
->    - Classification Report
->    - Confusion Matrix
->    - ROC curve (AUROC)
->    - y_prob histogram
+- **binary classifier**
+    - Accuracy
+    - Calibration Curve
+    - Classification Report
+    - Confusion Matrix
+    - ROC curve (AUROC)
+    - y_prob histogram
 
 
->- **comparing distributions**
->    - raincloud plot
+- **comparing distributions**
+    - raincloud plot
 
 # Gallery
 
