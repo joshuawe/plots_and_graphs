@@ -49,7 +49,9 @@ These could include visualizing the results for a binary classifier, for which p
 |                    ROC Curve (AUROC)               |                  y_prob histogram                          |                                                   |
 
 
-
+| <img src="/images/raincloud.png" width="300" height="300" alt="Your Image">        |                                         |
+|:--------------------------------------------------:|:-------------------------------------------------:|
+|                    Raincloud              |                                                |
 
 
 
