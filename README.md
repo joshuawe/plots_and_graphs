@@ -40,16 +40,16 @@ These could include visualizing the results for a binary classifier, for which p
 
 > TBD! Here, each new plot should be rendered and included as a small reference.
 
-| <img src="/images/calibration_plot.png" width="300" height="300" alt="Your Image"> | <img src="/images/classification_report.png" width="300" height="150" alt="Your Image"> | <img src="/images/confusion_matrix.png" width="300" height="250" alt="Your Image"> |
+| <img src="/images/calibration_plot.png" width="300" alt="Your Image"> | <img src="/images/classification_report.png" width="300" alt="Your Image"> | <img src="/images/confusion_matrix.png" width="300" alt="Your Image"> |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
 |                    Calibration Curve               |                  Classification Report                     |                 Confusion Matrix                 |
 
-| <img src="/images/roc_curve.png" width="300" height="300" alt="Your Image">        | <img src="/images/y_prob_histogram.png" width="300" height="300" alt="Your Image">  |                                                   |
+| <img src="/images/roc_curve.png" width="300" alt="Your Image">        | <img src="/images/y_prob_histogram.png" width="300" alt="Your Image">  |                                                   |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
 |                    ROC Curve (AUROC)               |                  y_prob histogram                          |                                                   |
 
 
-| <img src="/images/raincloud.png" width="300" height="300" alt="Your Image">        |                                         |
+| <img src="/images/raincloud.png" width="300" alt="Your Image">        |                                         |
 |:--------------------------------------------------:|:-------------------------------------------------:|
 |                    Raincloud              |                                                |
 
