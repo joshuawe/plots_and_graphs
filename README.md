@@ -61,10 +61,16 @@ Why create everything from scratch, if some things exist already? Here are some 
 
 + [Python Graph Gallery](https://python-graph-gallery.com) - great collection of graphs. First look at their gallery, then check out their '[BEST](https://python-graph-gallery.com/best-python-chart-examples/)' collection for inspiration.
 + [Scientific Visualization Book](https://github.com/rougier/scientific-visualization-book) - definitely check out the first part for essential tips for good graphs. And deep dive further to improve your visualization game.
++ [CHARTIO](https://chartio.com/learn/charts/how-to-choose-colors-data-visualization/) - must read on how to choose colors and color palettes.
 
 
 # How to use
 > TBD: How to use the functions. What is their standardization? How can a figure be altered?
+
+Install the package (in the future).
+```bash
+pip install plotsandgraphs
+```
 
 ```python
 import plotsandgraphs
@@ -77,7 +83,7 @@ y_prob = np.random.uniform(0, 1, n_samples)   # the probability of class 1 predi
 y_true = np.random.choice([0,1], n_samples)   # the actually corresponding class labels
 
 # create figure
-fig_auroc = plotsandgraphs.binaryclassifier.plot_calibration_curve(y_prob, y_true, save_fig_path=None)
+fig_auroc = plotsandgraphs.binary_classifier.plot_calibration_curve(y_prob, y_true, save_fig_path=None)
 
 # customize figure
 axes = fig_auroc.get_axes()
