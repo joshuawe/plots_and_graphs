@@ -194,13 +194,49 @@ def plot_classification_report(y_test: torch.Tensor,
 
 
 
-def plot_roc_curve(y_true: torch.Tensor, y_score: torch.Tensor, figsize=(5,5), save_fig_path=None):
-    fpr, tpr, thresholds = roc_curve(y_true, y_score)
-    roc_auc = auc(fpr, tpr)
-    fig, ax = plt.subplots(figsize=(5,5))
-    plt.plot(fpr, tpr, label=f'ROC curve (area = {roc_auc:.2f})')
-    plt.scatter(fpr, tpr, marker='o', alpha=0.1, facecolors='None', edgecolors='C0')
-    plt.fill_between(fpr, tpr, alpha=0.2, color='C0')
+def plot_roc_curve(
+                y_true: torch.Tensor, 
+                y_score: torch.Tensor, 
+                figsize=(5,5), 
+                save_fig_path=None, 
+                confidence_intervals: float=0.95, 
+                n_bootstraps=None,
+                highlight_area=True):
+    # create figure
+    fig = plt.figure(figsize=(5,5))
+    ax = fig.add_subplot(111)
+    
+    if n_bootstraps is None:
+        base_fpr, mean_tprs, thresholds = roc_curve(y_true, y_score)
+        mean_auc = auc(base_fpr, mean_tprs)
+        if highlight_area is True:
+            plt.fill_between(base_fpr, 0, mean_tprs, alpha=0.2, zorder=2)
+    else:
+        # Bootstrapping for AUROC
+        bootstrap_aucs = []
+        bootstrap_tprs = []
+        base_fpr = np.linspace(0, 1, 101)
+        for _ in tqdm(range(n_bootstraps), desc='Bootstrapping'):
+            indices = resample(np.arange(len(y_true)), replace=True)
+            fpr_i, tpr_i, _ = roc_curve(y_true[indices], y_score[indices])
+            roc_auc_i = auc(fpr_i, tpr_i)
+            bootstrap_aucs.append(roc_auc_i)
+            
+            # Interpolate tpr_i to base_fpr, so we have the tpr for the same fpr values for each bootstrap iteration
+            tpr_i_interp = np.interp(base_fpr, fpr_i, tpr_i)
+            tpr_i_interp[0] = 0.0
+            bootstrap_tprs.append(tpr_i_interp)
+
+        mean_auc = np.mean(bootstrap_aucs)
+        tprs = np.array(bootstrap_tprs)
+        mean_tprs = tprs.mean(axis=0)
+        
+        tprs_upper = np.quantile(tprs, 0.025, axis=0)
+        tprs_lower = np.quantile(tprs, 0.975, axis=0)
+    
+        plt.fill_between(base_fpr, tprs_lower, tprs_upper, alpha=0.3, label='95% CI', zorder=2)
+    
+    plt.plot(base_fpr, mean_tprs, label=f'ROC curve (area = {mean_auc:.2f})', zorder=3)
     plt.plot([0, 1], [0, 1], 'k--', label='Random classifier')
     plt.xlim([0.0, 1.01])
     plt.ylim([-0.01, 1.01])
@@ -213,11 +249,12 @@ def plot_roc_curve(y_true: torch.Tensor, y_score: torch.Tensor, figsize=(5,5), s
     ax.set_yticks(np.arange(0, 1.1, 0.2))
     plt.tight_layout()
     
-    if (save_fig_path != None):
+    if save_fig_path:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches='tight')
-    return fig, roc_auc
+    
+    return fig
 
 
 

@@ -72,6 +72,8 @@ Install the package (in the future).
 pip install plotsandgraphs
 ```
 
+Example usage for a calibration curve.
+
 ```python
 import plotsandgraphs
 import matplotlib.pyplot as plt
