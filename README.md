@@ -98,6 +98,12 @@ fig.savefig('calibration_plot.png', bbox_inches='tight')
 > Show all requirements
 
 
-## Contributors
+# Contributors
 
 ![Contributors](https://contrib.rocks/image?repo=joshuawe/plots_and_graphs)
+
+
+# Reference
+
+Of course we are happy to be mentioned in any way, if our repository has helped you.
+You can also share this repository with your friends and collegues to make their lives easier. Cheers!
