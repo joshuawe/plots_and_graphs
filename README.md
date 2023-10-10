@@ -44,9 +44,9 @@ These could include visualizing the results for a binary classifier, for which p
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
 |                    Calibration Curve               |                  Classification Report                     |                 Confusion Matrix                 |
 
-| <img src="/images/roc_curve.png" width="300" alt="Your Image">        | <img src="/images/y_prob_histogram.png" width="300" alt="Your Image">  |  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
+| <img src="/images/roc_curve.png" width="300" alt="Your Image">        | <img src="/images/roc_curve_bootstrap.png" width="300" alt="Your Image">        | <img src="/images/y_prob_histogram.png" width="300" alt="Your Image">  |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
-|                    ROC Curve (AUROC)               |                  y_prob histogram                          |                                                   |
+|                    ROC Curve (AUROC)               |                  ROC Curve (AUROC) with bootstrapping                          |                  y_prob histogram                                 |
 
 
 | <img src="/images/raincloud.png" width="300" alt="Your Image">        |  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> | <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
