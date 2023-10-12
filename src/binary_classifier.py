@@ -4,7 +4,6 @@ from matplotlib.figure import Figure
 import seaborn as sns
 import numpy as np
 import pandas as pd
-import torch
 from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay, roc_curve, auc, accuracy_score
 from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
@@ -38,7 +37,7 @@ def plot_accuracy(y_true, y_pred, name='', save_fig_path=None):
         fig.savefig(save_fig_path, bbox_inches='tight')
     return fig, accuracy
 
-def plot_confusion_matrix(y_true: torch.Tensor, y_pred: torch.Tensor, save_fig_path=None) -> "matplotlib.figure.Figure":
+def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, save_fig_path=None) -> "matplotlib.figure.Figure":
     import matplotlib.colors as colors
     
     # Compute the confusion matrix
@@ -84,8 +83,8 @@ def plot_confusion_matrix(y_true: torch.Tensor, y_pred: torch.Tensor, save_fig_p
 
 
 
-def plot_classification_report(y_test: torch.Tensor, 
-                               y_pred: torch.Tensor, 
+def plot_classification_report(y_test: np.ndarray, 
+                               y_pred: np.ndarray, 
                                title='Classification Report', 
                                figsize=(8, 4), 
                                save_fig_path=None, **kwargs):
