@@ -90,7 +90,8 @@ def plot_raincloud(df: pd.DataFrame,
     if x_label is None:
         x_label = x_col
     plt.xlabel(x_label)
-    plt.title(title + '\n')
+    if title:
+        plt.title(title + '\n')
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
