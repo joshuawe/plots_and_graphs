@@ -1,5 +1,5 @@
 <p align="center">
- <img width="300px" src="images/logo.png" align="center" alt="Plots and Graphs" />
+ <img width="150px" src="images/logo_plots_and_graphs.png" align="center" alt="Plots and Graphs" />
  <h2 align="center">Plots and graphs</h2>
  <p align="center">Save your time. Create plots and graphs that look nice. </p>
 </p>
@@ -103,6 +103,8 @@ fig.savefig('calibration_plot.png', bbox_inches='tight')
 # Contributors
 
 ![Contributors](https://contrib.rocks/image?repo=joshuawe/plots_and_graphs)
+
++ [DALL-E 3](https://openai.com/dall-e-3) created the project logo on 17th October 2023. Prompt used: *Illustration of a stylized graph with colorful lines and bars, representing data visualization, suitable for a project logo named 'plots and graphs'.*
 
 
 # Reference
