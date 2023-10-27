@@ -12,7 +12,7 @@ from tqdm import tqdm
 from typing import Optional
 
 
-def plot_accuracy(y_true, y_pred, name='', save_fig_path=None):
+def plot_accuracy(y_true, y_pred, name='', save_fig_path=None) -> Figure:
     """ Really ugly plot, I am not sure if the scalar value for accuracy should receive an entire plot."""
     accuracy = accuracy_score(y_true, y_pred)
         
@@ -354,7 +354,7 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, save_fig_path
     return fig
 
 
-def plot_y_prob_histogram(y_prob: np.ndarray, save_fig_path=None):
+def plot_y_prob_histogram(y_prob: np.ndarray, save_fig_path=None) -> Figure:
     fig = plt.figure(figsize=(5,5))
     ax = fig.add_subplot(111)
     ax.hist(y_prob, bins=10, alpha=0.9, edgecolor='midnightblue', linewidth=2, rwidth=1)
