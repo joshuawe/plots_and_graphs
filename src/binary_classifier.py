@@ -4,12 +4,12 @@ from matplotlib.figure import Figure
 import seaborn as sns
 import numpy as np
 import pandas as pd
-from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay, roc_curve, auc, accuracy_score
+from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay, roc_curve, auc, accuracy_score, precision_recall_curve
 from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
 from pathlib import Path
 from tqdm import tqdm
-
+from typing import Optional
 
 
 def plot_accuracy(y_true, y_pred, name='', save_fig_path=None):
@@ -375,3 +375,74 @@ def plot_y_prob_histogram(y_prob: np.ndarray, save_fig_path=None):
         fig.savefig(save_fig_path, bbox_inches='tight')
     
     return fig
+
+
+
+def plot_pr_curve(
+        y_true: np.ndarray, 
+        y_score: np.ndarray, 
+        figsize=(5,5), 
+        save_fig_path: Optional[str]=None, 
+        color: Optional[str]= None, 
+        label: Optional[str]=None,
+        title: Optional[str]=None
+    ) -> Figure:
+    """
+    Visualize the Precision-Recall curve for a binary classifier.
+
+    Parameters
+    ----------
+    y_true : np.ndarray
+        The actual labels of the data. Either 0 or 1.
+    y_score : np.ndarray
+        The output scores of the classifier. Between 0 and 1.
+    figsize : tuple, optional
+        The size of the figure. By default (5,5).
+    save_fig_path : str, optional
+        Path to folder where the figure should be saved. If None then plot is not saved, by default None. E.g. 'figures/pr_curve.png'.
+    color : str, optional
+        Color of the PR curve, by default None.
+    label : str, optional
+        Custom label for the plot. If None, a default label is used. By default None.
+
+    Returns
+    -------
+    fig : matplotlib.pyplot figure
+        The figure of the PR curve
+    """
+    
+    # Create a new figure
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111)
+    
+    # Compute Precision-Recall curve and area for each class
+    precision, recall, _ = precision_recall_curve(y_true, y_score)
+    
+    pr_auc = auc(recall, precision)
+    
+    if label is None:
+        # Use a default label if none is provided
+        label = 'PR curve'
+    
+    label += f' (area = {pr_auc:.3f})'
+    
+    # Plot Precision-Recall curve
+    ax.plot(recall, precision, label=label, color=color)
+    ax.set_xlim([0.0, 1.01])
+    ax.set_ylim([-0.01, 1.01])
+    ax.set_xlabel('Recall')
+    ax.set_ylabel('Precision')
+    if title is not None:
+        ax.set_title(title)
+    ax.legend(loc="lower right")
+    ax.spines[:].set_visible(False)
+    ax.grid(True, linestyle='-', linewidth=0.5, color='grey', alpha=0.5)
+    ax.set_yticks(np.arange(0, 1.1, 0.2))
+    plt.tight_layout()    
+    
+    # Save the figure if save_fig_path is specified
+    if save_fig_path:
+        plt.savefig(save_fig_path, bbox_inches='tight')
+    
+    return fig
+
