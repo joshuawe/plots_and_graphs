@@ -37,7 +37,7 @@ def plot_accuracy(y_true, y_pred, name='', save_fig_path=None):
         fig.savefig(save_fig_path, bbox_inches='tight')
     return fig, accuracy
 
-def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, save_fig_path=None) -> "matplotlib.figure.Figure":
+def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, save_fig_path=None) -> Figure:
     import matplotlib.colors as colors
     
     # Compute the confusion matrix
