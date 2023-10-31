@@ -329,7 +329,7 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, save_fig_path
     
     # Plotting
     ax.bar(prob_pred, prob_true, width=bar_width, zorder=3, facecolor=to_rgba('C0',0.75), edgecolor='midnightblue', linewidth=2, label=f'True Calibration')
-    ax.bar(prob_pred, prob_pred - prob_true, bottom=prob_true, width=bar_width, zorder=3, alpha=0.5, edgecolor='red', fill=False, linewidth=2, label=f'Error, mean = {expected_cal_error}', hatch='//')
+    ax.bar(prob_pred, prob_pred - prob_true, bottom=prob_true, width=bar_width, zorder=3, alpha=0.5, edgecolor='red', fill=False, linewidth=2, label=f'Mean ECE = {expected_cal_error}', hatch='//')
     ax.plot([0, 1], [0, 1], linestyle='--', color='grey', zorder=3, label='Perfect Calibration')
         
     # Labels and titles
