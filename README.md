@@ -1,15 +1,26 @@
 <p align="center">
- <img width="300px" src="images/logo.png" align="center" alt="Plots and Graphs" />
+ <img width="150px" src="images/logo_plots_and_graphs.png" align="center" alt="Plots and Graphs" />
  <h2 align="center">Plots and graphs</h2>
  <p align="center">Save your time. Create plots and graphs that look nice. </p>
 </p>
 
-
-[![GitHub commits](https://badgen.net/github/commits/joshuawe/plots_and_graphs)](https://GitHub.com/joshuawe/plots_and_graphs/commits)
-[![GitHub contributors](https://img.shields.io/github/contributors/joshuawe/plots_and_graphs.svg)](https://GitHub.com/Naereen/badges/graphs/contributors/)
-[![GitHub issues](https://badgen.net/github/issues/joshuawe/plots_and_graphs/)](https://GitHub.com/joshuawe/plots_and_graphs/issues/)
-[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
-[![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+<p align="center">
+  <a href="https://GitHub.com/joshuawe/plots_and_graphs/commits">
+    <img src="https://badgen.net/github/commits/joshuawe/plots_and_graphs" alt="GitHub commits">
+  </a>
+  <a href="https://GitHub.com/Naereen/badges/graphs/contributors/">
+    <img src="https://img.shields.io/github/contributors/joshuawe/plots_and_graphs.svg" alt="GitHub contributors">
+  </a>
+  <a href="https://GitHub.com/joshuawe/plots_and_graphs/issues/">
+    <img src="https://badgen.net/github/issues/joshuawe/plots_and_graphs/" alt="GitHub issues">
+  </a>
+  <a href="https://github.com/joshuawe/plots_and_graphs/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="GPLv3 license">
+  </a>
+  <a href="https://github.com/ellerbrock/open-source-badges/">
+    <img src="https://badges.frapsoft.com/os/v2/open-source.png?v=103" alt="Open Source Love png2">
+  </a>
+</p>
 
 
 The repository will contain a collection of useful, useable, and reuseable plots and graphs.
@@ -103,6 +114,8 @@ fig.savefig('calibration_plot.png', bbox_inches='tight')
 # Contributors
 
 ![Contributors](https://contrib.rocks/image?repo=joshuawe/plots_and_graphs)
+
++ [DALL-E 3](https://openai.com/dall-e-3) created the project logo on 17th October 2023. Prompt used: *Illustration of a stylized graph with colorful lines and bars, representing data visualization, suitable for a project logo named 'plots and graphs'.*
 
 
 # Reference
