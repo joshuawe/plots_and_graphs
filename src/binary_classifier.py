@@ -301,9 +301,9 @@ def plot_roc_curve(
 
 
 
-def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, save_fig_path=None):
+def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, save_fig_path=None):
     """
-    Creates calibration plot for a binary classifier.
+    Creates calibration plot for a binary classifier and calculates the ECE.
 
     Parameters
     ----------
@@ -311,16 +311,27 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, save_fig_path
         The output probabilities of the classifier. Between 0 and 1.
     y_true : np.ndarray
         The actual labels of the data. Either 0 or 1.
-    save_fig_path : _type_, optional
+    n_bins : int
+        The number of bins to use for the calibration curve.
+    save_fig_path : str, optional
         Path to folder where the figure should be saved. If None then plot is not saved, by default None
 
     Returns
     -------
     fig : matplotlib.pyplot figure
         The figure of the calibration plot
+    ece : float
+        The expected calibration error.
     """
-    prob_true, prob_pred = calibration_curve(y_true, y_prob, n_bins=10, strategy='uniform')
-    expected_cal_error = np.abs(prob_pred-prob_true).mean().round(2)
+    prob_true, prob_pred = calibration_curve(y_true, y_prob, n_bins=n_bins, strategy='uniform')
+    
+    # Find the number of samples in each bin
+    bin_counts = np.histogram(y_prob, bins=n_bins, range=(0, 1))[0]
+    
+    # Calculate the weighted absolute difference (ECE)
+    ece = np.abs(prob_pred - prob_true) * (bin_counts / len(y_prob))
+    ece = ece.sum().round(2)
+    
     fig = plt.figure(figsize=(5,5))
     ax = fig.add_subplot(111)
     
@@ -329,7 +340,7 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, save_fig_path
     
     # Plotting
     ax.bar(prob_pred, prob_true, width=bar_width, zorder=3, facecolor=to_rgba('C0',0.75), edgecolor='midnightblue', linewidth=2, label=f'True Calibration')
-    ax.bar(prob_pred, prob_pred - prob_true, bottom=prob_true, width=bar_width, zorder=3, alpha=0.5, edgecolor='red', fill=False, linewidth=2, label=f'Mean ECE = {expected_cal_error}', hatch='//')
+    ax.bar(prob_pred, prob_pred - prob_true, bottom=prob_true, width=bar_width, zorder=3, alpha=0.5, edgecolor='red', fill=False, linewidth=2, label=f'Mean ECE = {ece}', hatch='//')
     ax.plot([0, 1], [0, 1], linestyle='--', color='grey', zorder=3, label='Perfect Calibration')
         
     # Labels and titles
@@ -346,12 +357,12 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, save_fig_path
     plt.tight_layout()
     
     # save plot
-    if (save_fig_path != None):
+    if save_fig_path is not None:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches='tight')
     
-    return fig
+    return fig, ece
 
 
 def plot_y_prob_histogram(y_prob: np.ndarray, save_fig_path=None) -> Figure:
