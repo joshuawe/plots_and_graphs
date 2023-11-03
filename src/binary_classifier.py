@@ -335,12 +335,13 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, sa
     fig = plt.figure(figsize=(5,5))
     ax = fig.add_subplot(111)
     
-    # Calculate bar width
-    bar_width = (prob_pred[1:] - prob_pred[:-1]).mean() * 0.75
+    # Evenly spaced bar locations on the x-axis and reduced bar width for spacing
+    bar_centers = np.linspace(0, 1, n_bins, endpoint=False) + 0.5 / n_bins
+    bar_width = 1.0 / n_bins * 0.9  # 90% of the bin width to create gaps
     
     # Plotting
-    ax.bar(prob_pred, prob_true, width=bar_width, zorder=3, facecolor=to_rgba('C0',0.75), edgecolor='midnightblue', linewidth=2, label=f'True Calibration')
-    ax.bar(prob_pred, prob_pred - prob_true, bottom=prob_true, width=bar_width, zorder=3, alpha=0.5, edgecolor='red', fill=False, linewidth=2, label=f'Mean ECE = {ece}', hatch='//')
+    ax.bar(bar_centers, prob_true, width=bar_width, align='center', zorder=3, facecolor=to_rgba('C0',0.75), edgecolor='midnightblue', linewidth=2, label=f'True Calibration')
+    ax.bar(bar_centers, prob_pred - prob_true, bottom=prob_true, width=bar_width, align='center', zorder=3, alpha=0.5, edgecolor='red', fill=False, linewidth=2, label=f'Mean ECE = {ece}', hatch='//')
     ax.plot([0, 1], [0, 1], linestyle='--', color='grey', zorder=3, label='Perfect Calibration')
         
     # Labels and titles
