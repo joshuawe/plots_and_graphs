@@ -78,6 +78,11 @@ Why create everything from scratch, if some things exist already? Here are some 
 # How to use
 > TBD: How to use the functions. What is their standardization? How can a figure be altered?
 
+Install the package (currently).
+```bash
+pip install -e .
+```
+
 Install the package (in the future).
 ```bash
 pip install plotsandgraphs
