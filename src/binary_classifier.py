@@ -337,7 +337,7 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, sa
     
     # Evenly spaced bar locations on the x-axis and reduced bar width for spacing
     bar_centers = np.linspace(0, 1, n_bins, endpoint=False) + 0.5 / n_bins
-    bar_width = 1.0 / n_bins * 0.9  # 90% of the bin width to create gaps
+    bar_width = 1.0 / n_bins # * 0.9  # 90% of the bin width to create gaps
     
     # Plotting
     ax.bar(bar_centers, prob_true, width=bar_width, align='center', zorder=3, facecolor=to_rgba('C0',0.75), edgecolor='midnightblue', linewidth=2, label=f'True Calibration')
