@@ -59,6 +59,7 @@ jobs:
         run: |
           ls -la
           cat MAKEFILE
+          make -f MAKEFILE virtualenv
       - name: Install project
         run: |
           make virtualenv
