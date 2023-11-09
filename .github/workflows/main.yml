@@ -56,7 +56,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install project
-        run: make install
+        run: |
+          make virtualenv
+          source .venv/bin/activate
+          make install
       - name: Run linter
         run: make lint
 
