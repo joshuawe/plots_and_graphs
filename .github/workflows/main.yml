@@ -58,7 +58,7 @@ jobs:
       - name: Debugging
         run: |
           ls -la
-          cat MAKEFILE
+          cat Makefile
           make virtualenv
       - name: Install project
         run: |
