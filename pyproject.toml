@@ -4,5 +4,8 @@ max-line-length = 120
 [tool.pylint."BASIC"]
 variable-rgx = "[a-z_][a-z0-9_]{0,30}$|[a-z0-9_]+([A-Z][a-z0-9_]+)*$"  # Allow snake case and camel case for variable names
 
+[tool.pylint."MESSAGES CONTROL"]
+disable = "W0621"  # Allow redefining names in outer scope
+
 [flake8]
 max-line-length = 120

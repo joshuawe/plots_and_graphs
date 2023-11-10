@@ -7,14 +7,14 @@ from typing import List, Tuple
 
 def plot_raincloud(df: pd.DataFrame,
                    x_col: str,
-                   y_col: str, 
-                   colors: List[str] = None, 
-                   order: List[str] = None, 
-                   title: str = None, 
-                   x_label: str = None, 
-                   x_range: Tuple[float, float] = None, 
-                   show_violin = True, 
-                   show_scatter = True, 
+                   y_col: str,
+                   colors: List[str] = None,
+                   order: List[str] = None,
+                   title: str = None,
+                   x_label: str = None,
+                   x_range: Tuple[float, float] = None,
+                   show_violin = True,
+                   show_scatter = True,
                    show_boxplot = True):
     
     """
@@ -49,7 +49,6 @@ def plot_raincloud(df: pd.DataFrame,
         colors = [mpl.colors.to_hex(cmap(i)) for i in np.linspace(0, 1, len(order))]
     else:
         assert len(colors) == len(order), 'colors and order must be the same length'
-        colors = colors
         
     # Boxplot
     if show_boxplot:
