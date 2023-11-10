@@ -36,8 +36,8 @@ lint:             ## Run pep8, black, mypy linters.
 	@echo "--- Running flake8 ---"
 	$(ENV_PREFIX)flake8 plotsandgraphs/
 	@echo "--- Running black ---"
-	$(ENV_PREFIX)black -l 79 --check plotsandgraphs/
-	$(ENV_PREFIX)black -l 79 --check tests/
+	$(ENV_PREFIX)black -l 119 --check --diff --color plotsandgraphs/
+	$(ENV_PREFIX)black -l 119 --check --diff --color tests/
 	@echo "--- Running mypy ---"
 	$(ENV_PREFIX)mypy --ignore-missing-imports plotsandgraphs/
 
