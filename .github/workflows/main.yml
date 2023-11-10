@@ -55,11 +55,6 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Debugging
-        run: |
-          ls -la
-          cat Makefile
-          make virtualenv
       - name: Install project
         run: |
           make virtualenv

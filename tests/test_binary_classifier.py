@@ -45,7 +45,7 @@ def test_roc_curve(random_data_binary_classifier):
 def test_roc_curve_bootstrap(random_data_binary_classifier):
     y_true, y_prob = random_data_binary_classifier
     binary.plot_roc_curve(
-        y_true, y_prob, n_bootstrap=10000, save_fig_path=TEST_RESULTS_PATH / "roc_curve_bootstrap.png"
+        y_true, y_prob, n_bootstraps=10000, save_fig_path=TEST_RESULTS_PATH / "roc_curve_bootstrap.png"
     )
     return
 
@@ -90,6 +90,6 @@ def test_calibration_curve(random_data_binary_classifier):
 def test_accuracy(random_data_binary_classifier):
     y_true, y_prob = random_data_binary_classifier
     binary.plot_accuracy(
-        y_prob, y_true, save_fig_path=TEST_RESULTS_PATH / "accuracy.png"
+        y_true, y_prob, save_fig_path=TEST_RESULTS_PATH / "accuracy.png"
     )
     return
