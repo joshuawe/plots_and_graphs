@@ -35,7 +35,7 @@ def plot_accuracy(y_true, y_pred, name='', save_fig_path=None) -> Figure:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches='tight')
-    return fig, accuracy
+    return fig
 
 def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, save_fig_path=None) -> Figure:
     import matplotlib.colors as colors
@@ -136,7 +136,7 @@ def plot_classification_report(y_test: np.ndarray,
     mask[:,cols-1] = True
     
     bounds = np.linspace(0, 1, 11)
-    cmap = plt.cm.get_cmap('YlOrRd', len(bounds)+1)
+    cmap = plt.cm.get_cmap('YlOrRd', len(bounds)+1) # type: ignore
     norm = colors.BoundaryNorm(bounds, cmap.N) # type: ignore[attr-defined]
     
     ax = sns.heatmap(df, mask=mask, annot=False, cmap=cmap, fmt='.3g',
@@ -428,8 +428,8 @@ def plot_pr_curve(
     
     # Plot Precision-Recall curve
     ax.plot(recall, precision, label=label, color=color)
-    ax.set_xlim([0.0, 1.01])
-    ax.set_ylim([-0.01, 1.01])
+    ax.set_xlim((0.0, 1.01))
+    ax.set_ylim((-0.01, 1.01))
     ax.set_xlabel('Recall')
     ax.set_ylabel('Precision')
     if title is not None:

@@ -32,9 +32,13 @@ fmt:              ## Format code using black & isort.
 
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
+	@echo "Running linters ..."
+	@echo "--- Running flake8 ---"
 	$(ENV_PREFIX)flake8 plotsandgraphs/
+	@echo "--- Running black ---"
 	$(ENV_PREFIX)black -l 79 --check plotsandgraphs/
 	$(ENV_PREFIX)black -l 79 --check tests/
+	@echo "--- Running mypy ---"
 	$(ENV_PREFIX)mypy --ignore-missing-imports plotsandgraphs/
 
 .PHONY: test
