@@ -1,5 +1,5 @@
 <p align="center">
- <img width="150px" src="images/logo_plots_and_graphs.png" align="center" alt="Plots and Graphs" />
+ <img width="150px" src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/logo_plots_and_graphs.png?raw=true" align="center" alt="Plots and Graphs" />
  <h2 align="center">Plots and graphs</h2>
  <p align="center">Save your time. Create plots and graphs that look nice. </p>
 </p>
@@ -51,16 +51,16 @@ These could include visualizing the results for a binary classifier, for which p
 
 > TBD! Here, each new plot should be rendered and included as a small reference.
 
-| <img src="/images/calibration_plot.png" width="300" alt="Your Image"> | <img src="/images/classification_report.png" width="300" alt="Your Image"> | <img src="/images/confusion_matrix.png" width="300" alt="Your Image"> |
+| <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/calibration_plot.png?raw=true" width="300" alt="Your Image"> | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/classification_report.png?raw=true" width="300" alt="Your Image"> | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/confusion_matrix.png?raw=true" width="300" alt="Your Image"> |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
 |                    Calibration Curve               |                  Classification Report                     |                 Confusion Matrix                 |
 
-| <img src="/images/roc_curve.png" width="300" alt="Your Image">        | <img src="/images/roc_curve_bootstrap.png" width="300" alt="Your Image">        | <img src="/images/y_prob_histogram.png" width="300" alt="Your Image">  |
+| <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/roc_curve.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/roc_curve_bootstrap.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/y_prob_histogram.png?raw=true" width="300" alt="Your Image">  |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
 |                    ROC Curve (AUROC)               |                  ROC Curve (AUROC) with bootstrapping                          |                  y_prob histogram                                 |
 
 
-| <img src="/images/raincloud.png" width="300" alt="Your Image">        |  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> | <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
+| <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/raincloud.png?raw=true" width="300" alt="Your Image">        |  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> | <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
 |:--------------------------------------------------:|:-------------------------------------------------:| :-------------------------------------------------:|
 |                    Raincloud              |                                                | |
 
