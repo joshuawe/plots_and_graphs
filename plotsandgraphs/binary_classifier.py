@@ -1,7 +1,8 @@
+from pathlib import Path
+from typing import Optional
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgba
 from matplotlib.figure import Figure
-import seaborn as sns
 import numpy as np
 import pandas as pd
 from sklearn.metrics import (
@@ -15,9 +16,7 @@ from sklearn.metrics import (
 )
 from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
-from pathlib import Path
 from tqdm import tqdm
-from typing import Optional
 
 
 def plot_accuracy(y_true, y_pred, name="", save_fig_path=None) -> Figure:
@@ -39,7 +38,7 @@ def plot_accuracy(y_true, y_pred, name="", save_fig_path=None) -> Figure:
     plt.title(title)
     plt.tight_layout()
 
-    if save_fig_path != None:
+    if save_fig_path is not None:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches="tight")
@@ -102,7 +101,7 @@ def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, save_fig_path=
     cbar.outline.set_visible(False)
     plt.tight_layout()
 
-    if save_fig_path != None:
+    if save_fig_path is not None:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches="tight")
@@ -148,7 +147,6 @@ def plot_classification_report(
     import matplotlib as mpl
     import matplotlib.colors as colors
     import seaborn as sns
-    import pathlib
 
     fig, ax = plt.subplots(figsize=figsize)
 
@@ -239,7 +237,7 @@ def plot_classification_report(
     plt.yticks(rotation=360)
     plt.tight_layout()
 
-    if save_fig_path != None:
+    if save_fig_path is not None:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches="tight")
@@ -507,7 +505,7 @@ def plot_y_prob_histogram(y_prob: np.ndarray, y_true: Optional[np.ndarray] = Non
     plt.tight_layout()
 
     # save plot
-    if save_fig_path != None:
+    if save_fig_path is not None:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches="tight")
