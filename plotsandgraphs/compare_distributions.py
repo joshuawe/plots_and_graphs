@@ -2,17 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 
 def plot_raincloud(df: pd.DataFrame,
                    x_col: str,
                    y_col: str, 
-                   colors: List[str] = None, 
-                   order: List[str] = None, 
-                   title: str = None, 
-                   x_label: str = None, 
-                   x_range: Tuple[float, float] = None, 
+                   colors: Optional[List[str]] = None, 
+                   order: Optional[List[str]] = None, 
+                   title: Optional[str] = None, 
+                   x_label: Optional[str] = None, 
+                   x_range: Optional[Tuple[float, float]] = None, 
                    show_violin = True, 
                    show_scatter = True, 
                    show_boxplot = True):

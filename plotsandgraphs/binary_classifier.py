@@ -137,7 +137,7 @@ def plot_classification_report(y_test: np.ndarray,
     
     bounds = np.linspace(0, 1, 11)
     cmap = plt.cm.get_cmap('YlOrRd', len(bounds)+1)
-    norm = colors.BoundaryNorm(bounds, cmap.N)
+    norm = colors.BoundaryNorm(bounds, cmap.N) # type: ignore[attr-defined]
     
     ax = sns.heatmap(df, mask=mask, annot=False, cmap=cmap, fmt='.3g',
             cbar_kws={'ticks':bounds[::2], 'norm':norm, 'boundaries':bounds},
