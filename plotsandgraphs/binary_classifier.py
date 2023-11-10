@@ -43,12 +43,10 @@ def plot_accuracy(y_true, y_pred, name="", save_fig_path=None) -> Figure:
         path = Path(save_fig_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(save_fig_path, bbox_inches="tight")
-    return fig, accuracy
+    return fig
 
 
-def plot_confusion_matrix(
-    y_true: np.ndarray, y_pred: np.ndarray, save_fig_path=None
-) -> Figure:
+def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, save_fig_path=None) -> Figure:
     import matplotlib.colors as colors
 
     # Compute the confusion matrix
@@ -57,9 +55,7 @@ def plot_confusion_matrix(
     cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
 
     # Create the ConfusionMatrixDisplay instance and plot it
-    cmd = ConfusionMatrixDisplay(
-        cm, display_labels=["class 0\nnegative", "class 1\npositive"]
-    )
+    cmd = ConfusionMatrixDisplay(cm, display_labels=["class 0\nnegative", "class 1\npositive"])
     fig, ax = plt.subplots(figsize=(4, 4))
     cmd.plot(
         cmap="YlOrRd",
@@ -159,11 +155,7 @@ def plot_classification_report(
     cmap = "YlOrRd"
 
     clf_report = classification_report(y_true, y_pred, output_dict=True, **kwargs)
-    keys_to_plot = [
-        key
-        for key in clf_report.keys()
-        if key not in ("accuracy", "macro avg", "weighted avg")
-    ]
+    keys_to_plot = [key for key in clf_report.keys() if key not in ("accuracy", "macro avg", "weighted avg")]
     df = pd.DataFrame(clf_report, columns=keys_to_plot).T
     # the following line ensures that dataframe are sorted from the majority classes to the minority classes
     df.sort_values(by=["support"], inplace=True)
@@ -174,8 +166,8 @@ def plot_classification_report(
     mask[:, cols - 1] = True
 
     bounds = np.linspace(0, 1, 11)
-    cmap = plt.cm.get_cmap("YlOrRd", len(bounds) + 1)
-    norm = colors.BoundaryNorm(bounds, cmap.N) # type: ignore[attr-defined]
+    cmap = plt.cm.get_cmap("YlOrRd", len(bounds) + 1)  # type: ignore[assignment]
+    norm = colors.BoundaryNorm(bounds, cmap.N)  # type: ignore[attr-defined]
 
     ax = sns.heatmap(
         df,
@@ -332,9 +324,7 @@ def plot_roc_curve(
             auc_upper = np.quantile(bootstrap_aucs, CI_upper)
             auc_lower = np.quantile(bootstrap_aucs, CI_lower)
             label = f"{confidence_interval:.0%} CI: [{auc_lower:.2f}, {auc_upper:.2f}]"
-            plt.fill_between(
-                base_fpr, tprs_lower, tprs_upper, alpha=0.3, label=label, zorder=2
-            )
+            plt.fill_between(base_fpr, tprs_lower, tprs_upper, alpha=0.3, label=label, zorder=2)
 
         if highlight_roc_area is True:
             print(
@@ -366,9 +356,7 @@ def plot_roc_curve(
     return fig
 
 
-def plot_calibration_curve(
-    y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, save_fig_path=None
-) -> Figure:
+def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, save_fig_path=None) -> Figure:
     """
     Creates calibration plot for a binary classifier and calculates the ECE.
 
@@ -390,9 +378,7 @@ def plot_calibration_curve(
     ece : float
         The expected calibration error.
     """
-    prob_true, prob_pred = calibration_curve(
-        y_true, y_prob, n_bins=n_bins, strategy="uniform"
-    )
+    prob_true, prob_pred = calibration_curve(y_true, y_prob, n_bins=n_bins, strategy="uniform")
 
     # Find the number of samples in each bin
     bin_counts = np.histogram(y_prob, bins=n_bins, range=(0, 1))[0]
@@ -465,7 +451,7 @@ def plot_calibration_curve(
     return fig
 
 
-def plot_y_prob_histogram(y_prob: np.ndarray, y_true: Optional[np.ndarray]=None, save_fig_path=None) -> Figure:
+def plot_y_prob_histogram(y_prob: np.ndarray, y_true: Optional[np.ndarray] = None, save_fig_path=None) -> Figure:
     """
     Provides a histogram for the predicted probabilities of a binary classifier. If ```y_true``` is provided, it divides the ```y_prob``` values into the two classes and plots them jointly into the same plot with different colors.
 
@@ -485,16 +471,32 @@ def plot_y_prob_histogram(y_prob: np.ndarray, y_true: Optional[np.ndarray]=None,
     """
     fig = plt.figure(figsize=(5, 5))
     ax = fig.add_subplot(111)
-    
+
     if y_true is None:
         ax.hist(y_prob, bins=10, alpha=0.9, edgecolor="midnightblue", linewidth=2, rwidth=1)
         # same histogram as above, but with border lines
         # ax.hist(y_prob, bins=10, alpha=0.5, edgecolor='black', linewidth=1.2)
     else:
         alpha = 0.6
-        ax.hist(y_prob[y_true==0], bins=10, alpha=alpha, edgecolor="midnightblue", linewidth=2, rwidth=1, label="$\\hat{y} = 0$")
-        ax.hist(y_prob[y_true==1], bins=10, alpha=alpha, edgecolor="darkred", linewidth=2, rwidth=1, label="$\\hat{y} = 1$")
-        
+        ax.hist(
+            y_prob[y_true == 0],
+            bins=10,
+            alpha=alpha,
+            edgecolor="midnightblue",
+            linewidth=2,
+            rwidth=1,
+            label="$\\hat{y} = 0$",
+        )
+        ax.hist(
+            y_prob[y_true == 1],
+            bins=10,
+            alpha=alpha,
+            edgecolor="darkred",
+            linewidth=2,
+            rwidth=1,
+            label="$\\hat{y} = 1$",
+        )
+
         plt.legend()
     ax.set(xlabel="Predicted probability [-]", ylabel="Count [-]", xlim=(-0.01, 1.0))
     ax.set_title("Histogram of predicted probabilities")
