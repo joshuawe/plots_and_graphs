@@ -55,9 +55,9 @@ These could include visualizing the results for a binary classifier, for which p
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
 |                    Calibration Curve               |                  Classification Report                     |                 Confusion Matrix                 |
 
-| <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/roc_curve.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/roc_curve_bootstrap.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/y_prob_histogram.png?raw=true" width="300" alt="Your Image">  |
+| <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/roc_curve_bootstrap.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/pr_curve.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/y_prob_histogram.png?raw=true" width="300" alt="Your Image">  |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
-|                    ROC Curve (AUROC)               |                  ROC Curve (AUROC) with bootstrapping                          |                  y_prob histogram                                 |
+|                    ROC Curve (AUROC) with bootstrapping             |                 Precision-Recall Curve                          |                  y_prob histogram                                 |
 
 
 | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/raincloud.png?raw=true" width="300" alt="Your Image">        |  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> | <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
@@ -82,7 +82,7 @@ Install the package via pip.
 pip install plotsandgraphs
 ```
 
-Alternativelynstall the package from git.
+Alternatively install the package from git.
 ```bash
 git clone https://github.com/joshuawe/plots_and_graphs
 cd plots_and_graphs

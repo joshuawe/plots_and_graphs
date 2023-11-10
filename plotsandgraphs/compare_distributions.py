@@ -1,8 +1,8 @@
+from typing import List, Tuple, Optional
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
-from typing import List, Tuple, Optional
 
 
 def plot_raincloud(
