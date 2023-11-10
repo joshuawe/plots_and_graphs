@@ -66,7 +66,7 @@ def plot_confusion_matrix(
         values_format="",
         colorbar=False,
         ax=ax,
-        text_kw={"visible": False},
+        # text_kw={"visible": False},
     )
     cmd.texts_ = []
     cmd.text_ = []
@@ -115,7 +115,7 @@ def plot_confusion_matrix(
 
 
 def plot_classification_report(
-    y_test: np.ndarray,
+    y_true: np.ndarray,
     y_pred: np.ndarray,
     title="Classification Report",
     figsize=(8, 4),
@@ -158,7 +158,7 @@ def plot_classification_report(
 
     cmap = "YlOrRd"
 
-    clf_report = classification_report(y_test, y_pred, output_dict=True, **kwargs)
+    clf_report = classification_report(y_true, y_pred, output_dict=True, **kwargs)
     keys_to_plot = [
         key
         for key in clf_report.keys()
