@@ -75,41 +75,50 @@ Why create everything from scratch, if some things exist already? Here are some 
 + [CHARTIO](https://chartio.com/learn/charts/how-to-choose-colors-data-visualization/) - must read on how to choose colors and color palettes.
 
 
-# How to use
-> TBD: How to use the functions. What is their standardization? How can a figure be altered?
+# Install
 
-Install the package (currently).
-```bash
-pip install -e .
-```
-
-Install the package (in the future).
+Install the package via pip.
 ```bash
 pip install plotsandgraphs
 ```
 
-Example usage for a calibration curve.
+Alternativelynstall the package from git.
+```bash
+git clone https://github.com/joshuawe/plots_and_graphs
+cd plots_and_graphs
+pip install -e .
+```
+
+# Usage
+
+Example usage of results from a binary classifier for a calibration curve.
 
 ```python
-import plotsandgraphs
 import matplotlib.pyplot as plt
 import numpy as np
+import plotsandgraphs as pandg
 
-# create some data
+# create some predictions of a hypothetical binary classifier
 n_samples = 1000
-y_prob = np.random.uniform(0, 1, n_samples)   # the probability of class 1 predictions
-y_true = np.random.choice([0,1], n_samples)   # the actually corresponding class labels
+y_true = np.random.choice([0,1], n_samples, p=[0.4, 0.6])   # the true class labels 0 or 1, with class imbalance 40:60
 
-# create figure
-fig_auroc = plotsandgraphs.binary_classifier.plot_calibration_curve(y_prob, y_true, save_fig_path=None)
+y_prob = np.zeros(y_true.shape)   # a model's probability of class 1 predictions
+y_prob[y_true==1] = np.random.beta(1, 0.6, y_prob[y_true==1].shape)
+y_prob[y_true==0] = np.random.beta(0.5, 1, y_prob[y_true==0].shape)
 
-# customize figure
+# show prob distribution
+fig_hist = pandg.binary_classifier.plot_y_prob_histogram(y_prob, y_true, save_fig_path=None)
+
+# create calibration curve
+fig_auroc = pandg.binary_classifier.plot_calibration_curve(y_prob, y_true, save_fig_path=None)
+
+
+# --- OPTIONAL: Customize figure ---
+# get axis of figure and change title
 axes = fig_auroc.get_axes()
 ax0 = axes[0]
 ax0.set_title('New Title for Calibration Plot')
-
-# save figure
-fig.savefig('calibration_plot.png', bbox_inches='tight')
+fig_auroc.show()
 ```
 
 # Requirements
