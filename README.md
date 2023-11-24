@@ -1,7 +1,7 @@
 <p align="center">
  <img width="150px" src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/logo_plots_and_graphs.png?raw=true" align="center" alt="Plots and Graphs" />
  <h2 align="center">Plots and graphs</h2>
- <p align="center">Save your time. Create plots and graphs that look nice. </p>
+ <p align="center">Visualizations of Machine Learning Metrics quick and simple. Save your time.</p>
 </p>
 
 <p align="center">
@@ -23,17 +23,19 @@
 </p>
 
 
-The repository will contain a collection of useful, useable, and reuseable plots and graphs.
+Every Machine Learning project requires the evaluation of the algorithm's performance. Many metrics are task specific (classification, regression, ...) but are used again and again and have to be plotted again and again. **Plotsandgraphs** makes it easier for you to visualize these metrics by providing a library with tidy and clear graphs for the most common metrics. It serves as a wrapper for the popular *matplotlib* package to create figures. This also allows users to apply custom changes, if necessary. 
 
-I know, ChatGPT is your friend and helper and with the right prompt can create any graph you would like to have. 
-However, it is very helpful to configure everything once and properly and only finetune the detail is necessary.
+**Plotsandgraphs** is model- and framework-agnostic. This means that **plotsandgraphs** only needs the algorithm's results to perform analysis and visualization and not the actual model itself. In the case of a binary classifier only the *true labels* as well as the *predicted probabilities* are required as input. Instead of spending time in visualizing results for each metric, **plotsandgraphs** can calculate and visualize all classification metrics with a single line of code. 
 
-So there is a collection for different types of plots and graphs. 
-Some might be great for visualizing data in general such as raincloud graphs or ridgeline plots while others might be more suitable for specific use cases. 
-These could include visualizing the results for a binary classifier, for which plots such as a confusion matrix or a callibration plot can be created.
+**Plotsandgraphs** provides analysis and visualization for the following problem types:
+- **binary classification**
+- *multi-class classification (coming soon)*
+- *regression (coming soon)*
+
+Furthermore, this library presents other useful visualizations, such as **comparing distributions**.
+
 
 # Overview of graphs and plots
->  TBD!
 
 - **binary classifier**
     - Accuracy
@@ -43,13 +45,15 @@ These could include visualizing the results for a binary classifier, for which p
     - ROC curve (AUROC)
     - y_prob histogram
 
+- *multi-class classifier*
+
+- *regression*
+
 
 - **comparing distributions**
     - raincloud plot
 
 # Gallery
-
-> TBD! Here, each new plot should be rendered and included as a small reference.
 
 | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/calibration_plot.png?raw=true" width="300" alt="Your Image"> | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/classification_report.png?raw=true" width="300" alt="Your Image"> | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/confusion_matrix.png?raw=true" width="300" alt="Your Image"> |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
@@ -68,11 +72,11 @@ These could include visualizing the results for a binary classifier, for which p
 
 # Other resources
 
-Why create everything from scratch, if some things exist already? Here are some helpful resources.
+Why create everything from scratch, if some things already exist? Here are some helpful resources that can improve your visualization skills.
 
-+ [Python Graph Gallery](https://python-graph-gallery.com) - great collection of graphs. First look at their gallery, then check out their '[BEST](https://python-graph-gallery.com/best-python-chart-examples/)' collection for inspiration.
-+ [Scientific Visualization Book](https://github.com/rougier/scientific-visualization-book) - definitely check out the first part for essential tips for good graphs. And deep dive further to improve your visualization game.
-+ [CHARTIO](https://chartio.com/learn/charts/how-to-choose-colors-data-visualization/) - must read on how to choose colors and color palettes.
++ [Python Graph Gallery](https://python-graph-gallery.com) - A great collection of graphs. First look at their gallery, then check out their '[BEST](https://python-graph-gallery.com/best-python-chart-examples/)' collection for inspiration.
++ [Scientific Visualization Book](https://github.com/rougier/scientific-visualization-book) - Definitely check out the first part for essential tips for good graphs. And then deep dive further to improve your visualization game.
++ [CHARTIO](https://chartio.com/learn/charts/how-to-choose-colors-data-visualization/) - A must read on how to choose colors and color palettes.
 
 
 # Install
