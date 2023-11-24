@@ -86,7 +86,7 @@ Install the package via pip.
 pip install plotsandgraphs
 ```
 
-Alternatively install the package from git.
+Alternatively install the package from git directly.
 ```bash
 git clone https://github.com/joshuawe/plots_and_graphs
 cd plots_and_graphs
