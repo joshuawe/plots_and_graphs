@@ -23,9 +23,9 @@
 </p>
 
 
-Every project including Machine Learning algorithms requires the evaluation of the algorithm's performance. The repertoire of metrics that can be used to assess these metrics is finite. **Plotsandgraphs** makes it easier for you to visualize these metrics by providing ... It uses the popular **matplotlib** package to create the figures, which also allows the user to apply their custom changes. 
+Every Machine Learning project requires the evaluation of the algorithm's performance. Many metrics are task specific (classification, regression, ...) but are used again and again and have to be plotted again and again. **Plotsandgraphs** makes it easier for you to visualize these metrics by providing a library with tidy and clear graphs for the most common metrics. It serves as a wrapper for the popular *matplotlib* package to create figures. This also allows users to apply custom changes, if necessary. 
 
-**Plotsandgraphs** is model- and framework-agnostic. This means that **plotsandgraphs** only needs the algorithm's results to perform analysis and visualization. In the case of a binary classifier only the true labels as well as the predicted probabilities are required as input. Instead of spending time in visualizing results, they can created by a single line of code. Furthermore, a different line of code could create all the metric visualizations for the specific problem type. 
+**Plotsandgraphs** is model- and framework-agnostic. This means that **plotsandgraphs** only needs the algorithm's results to perform analysis and visualization and not the actual model itself. In the case of a binary classifier only the *true labels* as well as the *predicted probabilities* are required as input. Instead of spending time in visualizing results for each metric, **plotsandgraphs** can calculate and visualize all classification metrics with a single line of code. 
 
 **Plotsandgraphs** provides analysis and visualization for the following problem types:
 - **binary classification**
