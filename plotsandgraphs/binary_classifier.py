@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Literal
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgba
 from matplotlib.figure import Figure
@@ -579,4 +579,128 @@ def plot_pr_curve(
     if save_fig_path:
         plt.savefig(save_fig_path, bbox_inches="tight")
 
+    return fig
+
+
+
+def plot_roc_pr_curve(
+        roc_pr: Literal["roc", "pr"],  # either 'roc' or 'pr'
+        y_true: np.ndarray, 
+        y_score: np.ndarray, 
+        figsize=(5,5), 
+        save_fig_path=None, 
+        confidence_interval: float=0.95, 
+        highlight_roc_area=True, 
+        n_bootstraps: Optional[int]=None) -> Figure:
+    """
+    Creates a ROC curve for a binary classifier. Includes the option for bootstrapping.
+
+    Parameters
+    ----------
+    y_true : np.ndarray
+        The actual labels of the data. Either 0 or 1.
+    y_score : np.ndarray
+        The output scores of the classifier. Between 0 and 1.
+    figsize : tuple, optional
+        The size of the figure. By default (5,5).
+    save_fig_path : str, optional
+        Path to folder where the figure should be saved. If None then plot is not saved, by default None. E.g. 'figures/roc_curve.png'.
+    confidence_interval : float, optional
+        The confidence interval to use for the calibration plot. By default 0.95. Between 0 and 1. Has no effect when not using n_bootstraps.
+    highlight_roc_area : bool, optional
+        Whether to highlight the area under the ROC curve. By default True. Has no effect when using n_bootstraps.
+    n_bootstraps : int, optional
+        Number of bootstrap samples to use for the calibration plot. Recommended minimum: 1000, moderate: 5000-10000, high: 50000-100000.
+        If None, then no bootstrapping is done. By default None.
+
+    Returns
+    -------
+    fig : matplotlib.pyplot figure
+        The figure of the calibration plot
+    """
+    
+    if roc_pr == "roc":
+        x_label = 'False Positive Rate'
+        y_label = 'True Positive Rate'
+        title = 'Receiver Operating Characteristic (ROC)'
+        def metric_curve(y_true, y_score):
+            fpr, tpr, _ = roc_curve(y_true, y_score)
+            return fpr, tpr
+
+    elif roc_pr == "pr":
+        x_label = 'Recall'
+        y_label = 'Precision'
+        title = 'Precision-Recall'
+        def metric_curve(y_true, y_score):
+            precision, recall, _ = precision_recall_curve(y_true, y_score)
+            return recall, precision
+    
+    # create figure
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111)
+    
+    if n_bootstraps is None:
+        base_X, mean_Y = metric_curve(y_true, y_score)
+        mean_auc = auc(base_X, mean_Y)
+        if highlight_roc_area is True:
+            plt.fill_between(base_X, 0, mean_Y, alpha=0.2, zorder=2)
+        if confidence_interval is not None:
+            print('Warning: confidence_intervals is not None, but n_bootstraps is None. Confidence intervals will not be plotted.')
+    else:
+        # Bootstrapping for AUROC
+        bootstrap_aucs, bootstrap_Y = [], []
+        base_X = np.linspace(0, 1, 101)
+        for _ in tqdm(range(n_bootstraps), desc='Bootstrapping'):
+            indices = resample(np.arange(len(y_true)), replace=True)
+            x_i, y_i = metric_curve(y_true[indices], y_score[indices])
+            roc_auc_i = auc(x_i, y_i)
+            bootstrap_aucs.append(roc_auc_i)
+            
+            # Interpolate tpr_i to base_fpr, so we have the tpr for the same fpr values for each bootstrap iteration
+            y_i = np.interp(base_X, x_i, y_i)
+            y_i[0] = 0.0
+            bootstrap_Y.append(y_i)
+
+        mean_auc = np.mean(bootstrap_aucs)
+        Ys = np.array(bootstrap_Y)
+        mean_Y = Ys.mean(axis=0)
+
+        # visualize confidence intervals
+        if confidence_interval is not None:
+            CI_upper = confidence_interval + (1-confidence_interval)/2
+            CI_lower = (1-confidence_interval)/2
+            tprs_upper = np.quantile(Ys, CI_upper, axis=0)
+            tprs_lower = np.quantile(Ys, CI_lower, axis=0)
+            auc_upper = np.quantile(bootstrap_aucs, CI_upper)
+            auc_lower = np.quantile(bootstrap_aucs, CI_lower)
+            label = f'{confidence_interval:.0%} CI: [{auc_lower:.2f}, {auc_upper:.2f}]'
+            plt.fill_between(base_X, tprs_lower, tprs_upper, alpha=0.3, label=label, zorder=2)
+            
+        if highlight_roc_area is True:
+            print('Warning: highlight_roc_area is True, but n_bootstraps is not None. The area under the ROC curve will not be highlighted, but instead the bootstrapping uncertainty.')
+    
+    X = base_X
+    Y = mean_Y
+    plt.plot(X, Y, label=f'ROC curve (AUROC = {mean_auc:.2f})', zorder=3)
+    plt.plot([0, 1], [0, 1], 'k--', label='Random classifier')
+    plt.xlim([0.0, 1.01])
+    plt.ylim([-0.01, 1.01])
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(title)
+    # reverse legend entry order
+    handles, labels = plt.gca().get_legend_handles_labels()
+    handles = handles[::-1]
+    labels = labels[::-1]
+    plt.legend(handles, labels, loc="lower right", frameon=False)
+    ax.spines[:].set_visible(False)
+    ax.grid(True, linestyle='-', linewidth=0.5, color='grey', alpha=0.5)
+    ax.set_yticks(np.arange(0, 1.1, 0.2))
+    plt.tight_layout()
+    
+    if save_fig_path:
+        path = Path(save_fig_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(save_fig_path, bbox_inches='tight')
+    
     return fig
