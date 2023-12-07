@@ -21,10 +21,16 @@ from tqdm import tqdm
 
 def plot_y_prob_histogram(y_true: np.ndarray, y_prob: Optional[np.ndarray] = None, save_fig_path=None) -> Figure:
     
-    plot_len = np.ceil(np.sqrt(y_true.shape[-1])).astype(int) # Number of plots in a row/column
-    fig, axes = plt.subplots(nrows=plot_len, ncols=plot_len, figsize=(plot_len*4+1, plot_len*4), sharey=True)
+    # Aiming for a square plot
+    plot_cols = np.ceil(np.sqrt(y_true.shape[-1])).astype(int) # Number of plots in a row
+    plot_rows = np.ceil(y_true.shape[-1] / plot_cols).astype(int) # Number of plots in a column
+    fig, axes = plt.subplots(nrows=plot_rows, ncols=plot_cols, figsize=(plot_cols*4+1, plot_rows*4), sharey=True)
     alpha = 0.6
     plt.suptitle("Predicted probability histogram")
+    
+    # Flatten axes if there is only one class, even though this function is designed for multiclasses
+    if y_true.shape[-1] == 1:
+        axes = np.array([axes])
     
     for i, ax in enumerate(axes.flat):
         if i >= y_true.shape[-1]:
@@ -51,10 +57,10 @@ def plot_y_prob_histogram(y_true: np.ndarray, y_prob: Optional[np.ndarray] = Non
             ax.set_title(f"Class {i}")
             ax.set_xlim((-0.005, 1.0))
             # if subplot in first column
-            if i % plot_len == 0:
+            if i == 0:
                 ax.set_ylabel("Count [-]")
             # if subplot in last row
-            if i >= plot_len*(plot_len-1):
+            if i == y_true.shape[-1]:
                 ax.set_xlabel("Predicted probability [-]")
             # ax.spines[:].set_visible(False)
             ax.grid(True, linestyle="-", linewidth=0.5, color="grey", alpha=0.5)
