@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional, List, Callable, Dict, Tuple
 import matplotlib.pyplot as plt
+from matplotlib.patches import BoxStyle
 from matplotlib.colors import to_rgba
 from matplotlib.figure import Figure
 import numpy as np
@@ -19,7 +20,7 @@ from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
 from tqdm import tqdm
 
-from plotsandgraphs.utils import bootstrap
+from plotsandgraphs.utils import bootstrap, set_black_title_box
 
 
 def plot_roc_curve(
@@ -77,6 +78,10 @@ def plot_roc_curve(
 
     # for each class calculate the ROC
     for i in tqdm(range(y_true.shape[-1]), desc='ROC for Class'):
+        # only plot axis that should be printed
+        if i >= y_true.shape[-1]:
+            # axes.flat[i].axis("off")
+            continue
         # bootstrap the ROC curve for class i
         roc_result = bootstrap(
                         metric_function=roc_metric_function,
@@ -109,7 +114,6 @@ def plot_roc_curve(
         ax.plot(common_fpr, tpr_median, label='Median ROC')
         ax.fill_between(common_fpr, tpr_lower, tpr_upper, alpha=0.2, label=f'{confidence_interval:.1%} CI')
         ax.plot([0, 1], [0, 1], "k--", label="Random classifier")
-        ax.set_title(f"Class {i}")
         ax.set_xlim([-0.01, 1.01])
         ax.set_ylim([-0.01, 1.01])
         # if subplot in first column
@@ -131,6 +135,12 @@ def plot_roc_curve(
         # ax.grid(True, linestyle="-", linewidth=0.5, color="grey", alpha=0.5)
         ax.set_yticks(np.arange(0, 1.1, 0.2))
     plt.tight_layout()
+    
+    # make the subplot tiles (and black boxes)
+    for i in range(y_true.shape[-1]):
+        ax = axes.flat[i]
+        set_black_title_box(ax, f"Class {i}")
+    plt.tight_layout(h_pad=1.5)
 
     if save_fig_path:
         path = Path(save_fig_path)
@@ -220,7 +230,7 @@ def plot_y_prob_histogram(y_true: np.ndarray, y_prob: Optional[np.ndarray] = Non
             if (i % plot_cols) == 0:
                 ax.set_ylabel("Count [-]")
             # if subplot in last row
-            if (i // plot_rows) + 1 == plot_rows:
+            if (i // plot_cols) + 1 == plot_rows:
                 ax.set_xlabel("$P\\,(y=1)$")
             # ax.spines[:].set_visible(False)
             ax.grid(True, linestyle="-", linewidth=0.5, color="grey", alpha=0.5)
