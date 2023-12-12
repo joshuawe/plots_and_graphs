@@ -20,20 +20,26 @@ from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
 from tqdm import tqdm
 
-from plotsandgraphs.utils import bootstrap, set_black_title_box
+from plotsandgraphs.utils import bootstrap, set_black_title_box, scale_ax_bbox
 
 
 def plot_roc_curve(
     y_true: np.ndarray,
     y_score: np.ndarray,
-    figsize: Optional[Tuple[float, float]]=None,
-    save_fig_path=None,
     confidence_interval: float = 0.95,
     highlight_roc_area: bool=True,
     n_bootstraps: int=1,
+    figsize: Optional[Tuple[float, float]]=None,
+    class_labels: Optional[List[str]]=None,
+    split_plots: bool=True,
+    save_fig_path=None,
 ) -> Tuple[Figure, Figure]:
     """
-    Creates a ROC curve for a multiclass classifier. Includes the option for bootstrapping.
+    Creates two plots. 
+    1) ROC curves for a multiclass classifier. Includes the option for bootstrapping.
+    2) An overview of the AUROC for each class and the macro average AUROC for one vs rest.
+    Note: That the AUROC overview plot can be included with the ROC curves by setting split_plots=False.
+    
 
     Parameters
     ----------
@@ -43,8 +49,6 @@ def plot_roc_curve(
         The output scores of the classifier. Between 0 and 1.
     figsize : tuple, optional
         The size of the figure. By default (5,5).
-    save_fig_path : str, optional
-        Path to folder where the figure should be saved. If None then plot is not saved, by default None. E.g. 'figures/roc_curve.png'.
     confidence_interval : float, optional
         The confidence interval to use for the calibration plot. By default 0.95. Between 0 and 1. Has no effect when not using n_bootstraps.
     highlight_roc_area : bool, optional
@@ -52,6 +56,12 @@ def plot_roc_curve(
     n_bootstraps : int, optional
         Number of bootstrap samples to use for the calibration plot. Recommended minimum: 1000, moderate: 5000-10000, high: 50000-100000.
         If None, then no bootstrapping is done. By default None.
+    class_labels : List[str], optional
+        The labels of the classes. By default None.
+    split_plots : bool, optional
+        Whether to split the plots into two separate figures. By default True.
+    save_fig_path : str, optional
+        Path to folder where the figure should be saved. If None then plot is not saved, by default None. E.g. 'figures/'.
 
     Returns
     -------
@@ -59,9 +69,15 @@ def plot_roc_curve(
         The figures of the calibration plot. First the roc curves, then the AUROC overview.
     """
     
+    num_classes = y_true.shape[-1]
+    class_labels = [f"Class {i}" for i in range(num_classes)] if class_labels is None else class_labels
+    
+    
+    # ------ ROC curves ------
+    n_subplots = num_classes + split_plots
     # Aiming for a square plot
-    plot_cols = np.ceil(np.sqrt(y_true.shape[-1])).astype(int) # Number of plots in a row
-    plot_rows = np.ceil(y_true.shape[-1] / plot_cols).astype(int) # Number of plots in a column
+    plot_cols = np.ceil(np.sqrt(n_subplots)).astype(int) # Number of plots in a row
+    plot_rows = np.ceil(n_subplots / plot_cols).astype(int) # Number of plots in a column
     figsize = (plot_cols*4+1, plot_rows*4) if figsize is None else figsize
     fig, axes = plt.subplots(nrows=plot_rows, ncols=plot_cols, figsize=figsize, sharey=True)
     plt.suptitle("Receiver Operating Characteristic (ROC), One vs Rest")
@@ -77,11 +93,12 @@ def plot_roc_curve(
     aucs_lower, aucs_median, aucs_upper = [], [], []
 
     # for each class calculate the ROC
-    for i in tqdm(range(y_true.shape[-1]), desc='ROC for Class'):
+    for i in tqdm(range(num_classes), desc='ROC for Class'):
         # only plot axis that should be printed
-        if i >= y_true.shape[-1]:
-            # axes.flat[i].axis("off")
+        if i >= num_classes:
             continue
+        
+        # --- BOOTSTRAPPING / CALCULATIONS ---
         # bootstrap the ROC curve for class i
         roc_result = bootstrap(
                         metric_function=roc_metric_function,
@@ -110,9 +127,11 @@ def plot_roc_curve(
         aucs_median.append(auc_median)
         aucs_upper.append(auc_upper)
         
+        # --- PLOTTING ---
         ax = axes.flat[i]
         ax.plot(common_fpr, tpr_median, label='Median ROC')
-        ax.fill_between(common_fpr, tpr_lower, tpr_upper, alpha=0.2, label=f'{confidence_interval:.1%} CI')
+        if highlight_roc_area:
+            ax.fill_between(common_fpr, tpr_lower, tpr_upper, alpha=0.2, label=f'{confidence_interval:.1%} CI')
         ax.plot([0, 1], [0, 1], "k--", label="Random classifier")
         ax.set_xlim([-0.01, 1.01])
         ax.set_ylim([-0.01, 1.01])
@@ -120,36 +139,45 @@ def plot_roc_curve(
         if (i % plot_cols) == 0:
             ax.set_ylabel("True Positive Rate")
         # if subplot in last row
-        if (i // plot_rows) + 1 == plot_rows:
+        if (i // plot_cols) + 1 == plot_rows:
             ax.set_xlabel("False Positive Rate")
         
-        # plot AUROC at the bottom right of the plot
+        # plot AUROC at the bottom right of each plot
         auroc_text = f"AUROC: {auc_median:.3f} {confidence_interval:.0%} CI: [{auc_lower:.3f},{auc_upper:.3f}]"
         ax.text(0.99, 0.02, auroc_text, ha="right", va="bottom", transform=ax.transAxes)
         
-        
+        # Legend only in first subplot
         if i == 0:
             # plot legend above previous text
             ax.legend(loc="center right", frameon=True, bbox_to_anchor=(0.5, 0., 0.5, 0.5))
         ax.spines[:].set_color("grey")
         # ax.grid(True, linestyle="-", linewidth=0.5, color="grey", alpha=0.5)
         ax.set_yticks(np.arange(0, 1.1, 0.2))
-    plt.tight_layout()
+
+    # disable axis for subplots in last row that are not required
+    for i in range(num_classes, len(axes.flat)):
+        axes.flat[i].axis("off")
     
-    # make the subplot tiles (and black boxes)
-    for i in range(y_true.shape[-1]):
-        ax = axes.flat[i]
-        set_black_title_box(ax, f"Class {i}")
+    # make the subplot tiles (and black boxes) 
+    for i in range(num_classes): set_black_title_box(axes.flat[i], f"Class {i}")
     plt.tight_layout(h_pad=1.5)
+    # make the subplot tiles (and black boxes)
+    #  First time to get the approx. correct spacing with plt.tight_layout()
+    #  Second time to get the correct width of the black box
+    #  Thank you matplotlib ...
+    for i in range(num_classes):
+        set_black_title_box(axes.flat[i], f"Class {i}", set_title_kwargs={'fontdict': {'fontname': 'Arial Black', 'fontweight': 'bold'}})
 
     if save_fig_path:
-        path = Path(save_fig_path)
+        path = Path(save_fig_path) / "roc_curves.png"
         path.parent.mkdir(parents=True, exist_ok=True)
-        fig.savefig(save_fig_path, bbox_inches="tight")
+        fig.savefig(path, bbox_inches="tight")
         
-    # ---------- AROC overview plot ----------
+        
+    # ---------- AUROC overview plot comparing classes ----------
     # Make an AUROC overview plot comparing the aurocs per class and combined
     
+    # Define metric funtion to calculate one vs rest AUROC
     def auroc_metric_function(y_true, y_score, average, multi_class):
         auc = roc_auc_score(y_true, y_score, average=average, multi_class=multi_class)
         return auc
@@ -169,22 +197,36 @@ def plot_roc_curve(
     aucs_upper = np.insert(aucs_upper, 0, auc_comb_upper)
 
     
-    
     # create the plot
-    fig_aurocs = plt.figure(figsize=(5,5))
-    plt.title(f"AUROC (One vs Rest, CI={confidence_interval:.0%})")
-    labels = ['One vs Rest'] + [f'Class {i}' for i in range(y_true.shape[-1])]
+    if split_plots:
+        fig_aurocs = plt.figure(figsize=(5,5))
+        ax = fig_aurocs.add_subplot(111)
+    else:
+        fig_aurocs = None 
+        ax = axes.flat[num_classes+1-1] # +1 cause we plot after class roc curve, -1 cause indexing begins at 0
+        scale_ax_bbox(ax, 0.9) # needed to avoid plot overlap and calling plt.tight_layout() again
+        ax.axis("on")
+        # y ticks on
+        ax.tick_params(axis='y', which='both', left=True, labelleft=True)
+    ax.set_title(f"AUROC (One vs Rest, CI={confidence_interval:.0%})")
+    labels = ['Macro\nAverage'] + class_labels
     
     for i, (lower, median, upper) in enumerate(zip(aucs_lower, aucs_median, aucs_upper)):
         lower = median - lower
         upper = upper - median
-        ax = plt.errorbar(i, median, yerr=[[lower], [upper]], fmt='o', color='black', ecolor='skyblue', capsize=5, capthick=2)
+        plt.errorbar(i, median, yerr=[[lower], [upper]], fmt='o', color='black', ecolor='skyblue', capsize=5, capthick=2)
     
-    # get axis
-    ax = plt.gca()
+    # # get axis
+    # ax = plt.gca()
     ax.spines[:].set_color("grey")
     plt.xticks(range(len(labels)), labels, rotation=0)
     plt.grid(True, linestyle=":", axis='both')
+    # plt.tight_layout(h_pad=1.5)
+    
+    if save_fig_path and split_plots is True:
+        path = Path(save_fig_path) / "aurocs_comparison.png"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fig_aurocs.savefig(path, bbox_inches="tight")
 
     return fig, fig_aurocs
 

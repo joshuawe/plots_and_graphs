@@ -95,7 +95,7 @@ class ExtendedTextBox_v2:
                     closed=True)
 
 
-def set_black_title_box(ax: "maptlotlib.axes.Axes", title=str, backgroundcolor='black', color='white'):
+def set_black_title_box(ax: "maptlotlib.axes.Axes", title=str, backgroundcolor='black', color='white', set_title_kwargs: Dict={}):
     """
     Sets the title of the given axes with a black bounding box.
     Note: When using `plt.tight_layout()` the box might not have the correct width. First call `plt.tight_layout()` and then `set_black_title_box()`.
@@ -105,10 +105,27 @@ def set_black_title_box(ax: "maptlotlib.axes.Axes", title=str, backgroundcolor='
     - title: The title string to be displayed.
     - backgroundcolor: The background color of the title box (default: 'black').
     - color: The color of the title text (default: 'white').
+    - set_title_kwargs: Keyword arguments to pass to `ax.set_title()`.
     """
     BoxStyle._style_list["ext"] = ExtendedTextBox_v2 
     ax_width = ax.get_window_extent().width
     # make title with black bounding box
-    title = ax.set_title(title, backgroundcolor=backgroundcolor, color=color)
+    title = ax.set_title(title, backgroundcolor=backgroundcolor, color=color, **set_title_kwargs)
     bb = title.get_bbox_patch() # get bbox from title
-    bb.set_boxstyle("ext", pad=0.1, width=ax_width ) # use custom style
+    bb.set_boxstyle("ext", pad=0.1, width=ax_width) # use custom style
+    
+    
+def scale_ax_bbox(ax: "maptlotlib.axes.Axes", factor: float):
+    # Get the current position of the subplot
+    box = ax.get_position()
+
+    # Calculate the new width and the adjustment for the x-position
+    new_width = box.width * factor
+    adjustment = (box.width - new_width) / 2
+
+    # Set the new position
+    ax.set_position([box.x0 + adjustment, box.y0, new_width, box.height])
+    
+    return
+
+    
