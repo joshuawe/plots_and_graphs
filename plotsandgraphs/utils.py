@@ -1,9 +1,10 @@
-from typing import Optional, List, Callable, Dict
+from typing import Optional, List, Callable, Dict, Tuple, Union
 from tqdm import tqdm
 from sklearn.utils import resample
 import numpy as np
 from matplotlib.path import Path
 from matplotlib.patches import BoxStyle
+from matplotlib.colors import LinearSegmentedColormap
 
 
 def bootstrap(metric_function: Callable, input_resample: List[np.ndarray], n_bootstraps: int, metric_kwargs: Dict={}) -> List:
@@ -127,5 +128,41 @@ def scale_ax_bbox(ax: "maptlotlib.axes.Axes", factor: float):
     ax.set_position([box.x0 + adjustment, box.y0, new_width, box.height])
     
     return
+
+
+
+def get_cmap(cmap_name: str, n_colors: Optional[int]=None) -> Tuple[LinearSegmentedColormap, Union[None, Tuple]]:
+    """
+    Loads one of the custom cmaps from the cmaps folder.
+
+    Parameters
+    ----------
+    cmap_name : str
+        The name of the cmap file without the extension.
+
+    Returns
+    -------
+    Tuple[LinearSegmentedColormap, Union[None, Tuple]]
+        A tuple of the cmap and a list of colors if n_colors is not None.
+        
+    Example
+    -------
+    >>> cmap_name = 'hawaii'
+    >>> cmap, color_list = get_cmap(cmap_name, n_colors=10)
+    """
+    from pathlib import Path as PathClass
+    
+    cm_path = PathClass(__file__).parent / ('cmaps/' + cmap_name + '.txt')
+    print(cm_path)
+    cm_data = np.loadtxt(cm_path)
+    cmap_name = cmap_name.split('.')[0]
+    cmap = LinearSegmentedColormap.from_list(cmap_name, cm_data)
+    if n_colors is not None:
+        color_list = cmap(np.linspace(0, 1, n_colors))
+    else:
+        color_list = None
+    return cmap, color_list
+
+
 
     
