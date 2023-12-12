@@ -20,7 +20,7 @@ from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
 from tqdm import tqdm
 
-from plotsandgraphs.utils import bootstrap, set_black_title_box, scale_ax_bbox
+from plotsandgraphs.utils import bootstrap, set_black_title_box, scale_ax_bbox, get_cmap
 
 
 def plot_roc_curve(
@@ -71,10 +71,10 @@ def plot_roc_curve(
     
     num_classes = y_true.shape[-1]
     class_labels = [f"Class {i}" for i in range(num_classes)] if class_labels is None else class_labels
-    
+    cmap, colors = get_cmap('roma', n_colors=num_classes+1)    
     
     # ------ ROC curves ------
-    n_subplots = num_classes + split_plots
+    n_subplots = num_classes + (split_plots is False)
     # Aiming for a square plot
     plot_cols = np.ceil(np.sqrt(n_subplots)).astype(int) # Number of plots in a row
     plot_rows = np.ceil(n_subplots / plot_cols).astype(int) # Number of plots in a column
@@ -129,9 +129,9 @@ def plot_roc_curve(
         
         # --- PLOTTING ---
         ax = axes.flat[i]
-        ax.plot(common_fpr, tpr_median, label='Median ROC')
+        ax.plot(common_fpr, tpr_median, label='Median ROC', c=colors[i])
         if highlight_roc_area:
-            ax.fill_between(common_fpr, tpr_lower, tpr_upper, alpha=0.2, label=f'{confidence_interval:.1%} CI')
+            ax.fill_between(common_fpr, tpr_lower, tpr_upper, alpha=0.2, label=f'{confidence_interval:.1%} CI', fc=colors[i])
         ax.plot([0, 1], [0, 1], "k--", label="Random classifier")
         ax.set_xlim([-0.01, 1.01])
         ax.set_ylim([-0.01, 1.01])
@@ -168,10 +168,6 @@ def plot_roc_curve(
     for i in range(num_classes):
         set_black_title_box(axes.flat[i], f"Class {i}", set_title_kwargs={'fontdict': {'fontname': 'Arial Black', 'fontweight': 'bold'}})
 
-    if save_fig_path:
-        path = Path(save_fig_path) / "roc_curves.png"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        fig.savefig(path, bbox_inches="tight")
         
         
     # ---------- AUROC overview plot comparing classes ----------
@@ -214,20 +210,24 @@ def plot_roc_curve(
     for i, (lower, median, upper) in enumerate(zip(aucs_lower, aucs_median, aucs_upper)):
         lower = median - lower
         upper = upper - median
-        plt.errorbar(i, median, yerr=[[lower], [upper]], fmt='o', color='black', ecolor='skyblue', capsize=5, capthick=2)
+        ax.errorbar(i, median, yerr=[[lower], [upper]], ecolor='grey', capsize=5, capthick=2)
+        ax.scatter(i, median, s=50, color=colors[i-1], zorder=10, alpha=0.8)
+
+    ax.set(xticks=range(len(labels)),xticklabels=labels)
+    ax.tick_params(axis='x', rotation=0)
+    ax.set_yticks(np.arange(0, 1.1, 0.1), minor=True)
+    ax.grid(True, linestyle=":", axis='both')
     
-    # # get axis
-    # ax = plt.gca()
-    ax.spines[:].set_color("grey")
-    plt.xticks(range(len(labels)), labels, rotation=0)
-    plt.grid(True, linestyle=":", axis='both')
-    # plt.tight_layout(h_pad=1.5)
-    
+    # save auroc comparison plot
     if save_fig_path and split_plots is True:
         path = Path(save_fig_path) / "aurocs_comparison.png"
         path.parent.mkdir(parents=True, exist_ok=True)
         fig_aurocs.savefig(path, bbox_inches="tight")
-
+    # save roc curves plot
+    if save_fig_path:
+        path = Path(save_fig_path) / "roc_curves.png"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(path, bbox_inches="tight")
     return fig, fig_aurocs
 
 

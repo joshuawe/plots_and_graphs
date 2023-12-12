@@ -153,7 +153,6 @@ def get_cmap(cmap_name: str, n_colors: Optional[int]=None) -> Tuple[LinearSegmen
     from pathlib import Path as PathClass
     
     cm_path = PathClass(__file__).parent / ('cmaps/' + cmap_name + '.txt')
-    print(cm_path)
     cm_data = np.loadtxt(cm_path)
     cmap_name = cmap_name.split('.')[0]
     cmap = LinearSegmentedColormap.from_list(cmap_name, cm_data)
