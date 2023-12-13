@@ -131,7 +131,7 @@ def plot_roc_curve(
         ax = axes.flat[i]
         ax.plot(common_fpr, tpr_median, label='Median ROC', c=colors[i])
         if highlight_roc_area:
-            ax.fill_between(common_fpr, tpr_lower, tpr_upper, alpha=0.2, label=f'{confidence_interval:.1%} CI', fc=colors[i])
+            ax.fill_between(common_fpr, tpr_lower, tpr_upper, alpha=0.3, label=f'{confidence_interval:.1%} CI', fc=colors[i])
         ax.plot([0, 1], [0, 1], "k--", label="Random classifier")
         ax.set_xlim([-0.01, 1.01])
         ax.set_ylim([-0.01, 1.01])
@@ -193,7 +193,7 @@ def plot_roc_curve(
     aucs_upper = np.insert(aucs_upper, 0, auc_comb_upper)
 
     
-    # create the plot
+    # Either create a new figure or use the same figure as the roc curves for the auroc overview
     if split_plots:
         fig_aurocs = plt.figure(figsize=(5,5))
         ax = fig_aurocs.add_subplot(111)
@@ -211,7 +211,7 @@ def plot_roc_curve(
         lower = median - lower
         upper = upper - median
         ax.errorbar(i, median, yerr=[[lower], [upper]], ecolor='grey', capsize=5, capthick=2)
-        ax.scatter(i, median, s=50, color=colors[i-1], zorder=10, alpha=0.8)
+        ax.scatter(i, median, s=25, color=colors[i-1], zorder=10, alpha=0.7)
 
     ax.set(xticks=range(len(labels)),xticklabels=labels)
     ax.tick_params(axis='x', rotation=0)
