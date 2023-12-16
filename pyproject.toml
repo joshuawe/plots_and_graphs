@@ -9,3 +9,6 @@ disable = "W0621"  # Allow redefining names in outer scope
 
 [flake8]
 max-line-length = 120
+
+[tool.mypy]
+ignore_missing_imports = true
