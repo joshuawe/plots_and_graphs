@@ -265,7 +265,7 @@ def plot_roc_curve(
     ax.grid(True, linestyle=":", axis="both")
 
     # save auroc comparison plot
-    if save_fig_path and split_plots is True:
+    if save_fig_path and split_plots is True and fig_aurocs is not None:
         path = Path(save_fig_path[1])
         path.parent.mkdir(parents=True, exist_ok=True)
         fig_aurocs.savefig(path, bbox_inches="tight")
