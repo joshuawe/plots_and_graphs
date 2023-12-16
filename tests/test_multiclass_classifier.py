@@ -70,26 +70,80 @@ def test_roc_curve(random_data_multiclass_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
+    # helper function for file name, to avoid repeating code
+    def get_path_name(confidence_interval, highlight_roc_area, n_bootstraps, figsize, split_plots):
+        if split_plots is False:
+            fig_path = TEST_RESULTS_PATH / f"roc_curves_conf_{confidence_interval}_highlight_{highlight_roc_area}_nboot_{n_bootstraps}_figsize_{figsize}.png"
+        else:
+            fig_path_1 = TEST_RESULTS_PATH / f"roc_curves_split_conf_{confidence_interval}_highlight_{highlight_roc_area}_nboot_{n_bootstraps}_figsize_{figsize}.png"
+            fig_path_2 = TEST_RESULTS_PATH / f"auroc_comparison_conf_{confidence_interval}_highlight_{highlight_roc_area}_nboot_{n_bootstraps}_figsize_{figsize}.png"
+            fig_path = [fig_path_1, fig_path_2]
+        return fig_path
+    
+    
     y_true, y_prob = random_data_multiclass_classifier
     
     confidence_intervals = [None, 0.99]
     highlight_roc_area = [True, False]
-    n_bootstraps = [1, 10000]
-    figsizes = [None, (10,10)]
+    n_bootstraps = [1, 1000]
+    figsizes = [None]
     split_plots = [True, False]
     
     # From the previous lists I want all possible combinations    
     combinations = list(product(confidence_intervals, highlight_roc_area, n_bootstraps, figsizes, split_plots))
     
     for confidence_interval, highlight_roc_area, n_bootstraps, figsize, split_plots in combinations:
-        # WE NEED THE CORRECT SAVE FIG PATH NAMES!!!!!
-        multiclass.plot_roc_curve(y_true=y_true, y_score=y_prob,
+        # check if one or two figures should be saved (splot_plots=True or False)
+        # if split_plots is False:
+        #     fig_path = TEST_RESULTS_PATH / f"roc_curves_conf_{confidence_interval}_highlight_{highlight_roc_area}_nboot_{n_bootstraps}_figsize_{figsize}.png"
+        # else:
+        #     fig_path_1 = TEST_RESULTS_PATH / f"roc_curves_conf_{confidence_interval}_highlight_{highlight_roc_area}_nboot_{n_bootstraps}_figsize_{figsize}.png"
+        #     fig_path_2 = TEST_RESULTS_PATH / f"auroc_comparison_conf_{confidence_interval}_highlight_{highlight_roc_area}_nboot_{n_bootstraps}_figsize_{figsize}.png"
+        #     fig_path = [fig_path_1, fig_path_2]
+        
+        fig_path = get_path_name(confidence_interval, highlight_roc_area, n_bootstraps, figsize, split_plots)
+            
+        # It should raise an error when confidence_interval is None but highlight_roc_area is True
+        if confidence_interval is None and highlight_roc_area is True:
+            with pytest.raises(ValueError):
+                multiclass.plot_roc_curve(y_true=y_true, y_score=y_prob,
                             confidence_interval=confidence_interval,
                             highlight_roc_area=highlight_roc_area,
                             n_bootstraps=n_bootstraps,
                             figsize=figsize,
                             split_plots=split_plots,
-                            save_fig_path=TEST_RESULTS_PATH / "roc_curve.png",)
+                            save_fig_path=fig_path)
+        # Otherwise no error
+        else:
+            multiclass.plot_roc_curve(y_true=y_true, y_score=y_prob,
+                            confidence_interval=confidence_interval,
+                            highlight_roc_area=highlight_roc_area,
+                            n_bootstraps=n_bootstraps,
+                            figsize=figsize,
+                            split_plots=split_plots,
+                            save_fig_path=fig_path)
+            
+    # check for SMALL figure size
+    confidence_interval, highlight_roc_area, n_bootstraps, figsize, split_plots = 0.95, True, 100, (3,3), False
+    fig_path = get_path_name(confidence_interval, highlight_roc_area, n_bootstraps, figsize, split_plots)
+    multiclass.plot_roc_curve(y_true=y_true, y_score=y_prob,
+                            confidence_interval=confidence_interval,
+                            highlight_roc_area=highlight_roc_area,
+                            n_bootstraps=n_bootstraps,
+                            figsize=figsize,
+                            split_plots=split_plots,
+                            save_fig_path=fig_path)
+    
+    # check for BIG figure size
+    confidence_interval, highlight_roc_area, n_bootstraps, figsize, split_plots = 0.95, True, 100, (15, 15), False
+    fig_path = get_path_name(confidence_interval, highlight_roc_area, n_bootstraps, figsize, split_plots)
+    multiclass.plot_roc_curve(y_true=y_true, y_score=y_prob,
+                            confidence_interval=confidence_interval,
+                            highlight_roc_area=highlight_roc_area,
+                            n_bootstraps=n_bootstraps,
+                            figsize=figsize,
+                            split_plots=split_plots,
+                            save_fig_path=fig_path)
     
 
 

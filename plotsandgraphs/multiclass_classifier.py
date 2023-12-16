@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, List, Callable, Dict, Tuple
+from typing import Optional, List, Callable, Dict, Tuple, Union
 import matplotlib.pyplot as plt
 from matplotlib.patches import BoxStyle
 from matplotlib.colors import to_rgba
@@ -26,14 +26,14 @@ from plotsandgraphs.utils import bootstrap, set_black_title_box, scale_ax_bbox, 
 def plot_roc_curve(
     y_true: np.ndarray,
     y_score: np.ndarray,
-    confidence_interval: float = 0.95,
+    confidence_interval: Optional[float] = 0.95,
     highlight_roc_area: bool=True,
     n_bootstraps: int=1,
     figsize: Optional[Tuple[float, float]]=None,
     class_labels: Optional[List[str]]=None,
     split_plots: bool=True,
-    save_fig_path=None,
-) -> Tuple[Figure, Figure]:
+    save_fig_path=Optional[Union[str, Tuple[str, str]]],
+) -> Tuple[Figure, Union[Figure, None]]:
     """
     Creates two plots. 
     1) ROC curves for a multiclass classifier. Includes the option for bootstrapping.
@@ -60,14 +60,19 @@ def plot_roc_curve(
         The labels of the classes. By default None.
     split_plots : bool, optional
         Whether to split the plots into two separate figures. By default True.
-    save_fig_path : str, optional
-        Path to folder where the figure should be saved. If None then plot is not saved, by default None. E.g. 'figures/'.
+    save_fig_path : Optional[Union[str, Tuple[str, str]]], optional
+        Path to folder where the figure(s) should be saved. If None then plot is not saved, by default None. If `split_plots` is False, then a single str is required. If True, then a tuple of strings (Pos 1 Roc curves comparison, Pos 2 AUROCs comparison). E.g. `save_fig_path=('figures/roc_curves.png', 'figures/aurocs_comparison.png')`. 
 
     Returns
     -------
     figures : Tuple[Figure, Figure] 
         The figures of the calibration plot. First the roc curves, then the AUROC overview.
     """
+    # Sanity checks
+    if confidence_interval is None and highlight_roc_area is True:
+        raise ValueError("Confidence interval must be set when highlight_roc_area is True.")
+    if confidence_interval is None:
+        confidence_interval = 0.95 # default value, but it will not be displayed in the plot
     
     num_classes = y_true.shape[-1]
     class_labels = [f"Class {i}" for i in range(num_classes)] if class_labels is None else class_labels
@@ -194,6 +199,7 @@ def plot_roc_curve(
 
     
     # Either create a new figure or use the same figure as the roc curves for the auroc overview
+    fig_aurocs = None
     if split_plots:
         fig_aurocs = plt.figure(figsize=(5,5))
         ax = fig_aurocs.add_subplot(111)
@@ -220,12 +226,13 @@ def plot_roc_curve(
     
     # save auroc comparison plot
     if save_fig_path and split_plots is True:
-        path = Path(save_fig_path) / "aurocs_comparison.png"
+        path = Path(save_fig_path[1])
         path.parent.mkdir(parents=True, exist_ok=True)
         fig_aurocs.savefig(path, bbox_inches="tight")
     # save roc curves plot
-    if save_fig_path:
-        path = Path(save_fig_path) / "roc_curves.png"
+    if save_fig_path is not None:
+        path = save_fig_path[0] if split_plots is True else save_fig_path
+        path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, bbox_inches="tight")
     return fig, fig_aurocs
