@@ -9,8 +9,8 @@ import plotsandgraphs.multiclass_classifier as multiclass
 TEST_RESULTS_PATH = Path(r"tests\test_results")
 
 
-@pytest.fixture(scope="module")
-def random_data_multiclass_classifier() -> Tuple[np.ndarray, np.ndarray]:
+# @pytest.fixture(scope="module")
+def random_data_multiclass_classifier(num_classes:int = 3) -> Tuple[np.ndarray, np.ndarray]:
     """
     Create random data for binary classifier tests.
 
@@ -19,7 +19,6 @@ def random_data_multiclass_classifier() -> Tuple[np.ndarray, np.ndarray]:
     Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    num_classes = 3
     class_labels = np.arange(num_classes)
     class_probs = np.random.random(num_classes)
     class_probs = class_probs / class_probs.sum() # normalize
@@ -32,8 +31,8 @@ def random_data_multiclass_classifier() -> Tuple[np.ndarray, np.ndarray]:
     y_pred = np.ones(y_true_one_hot.shape)
 
     # parameters for Beta distribution for each label (a0,b0 for class 0, a1,b1 for class 1)
-    a0, b0 = [0.1, 0.6, 0.3, 0.4, 2],  [0.4, 1.2, 0.8, 1, 5]
-    a1, b1 = [0.9, 0.8, 0.9, 1.2, 5],  [0.4, 0.1, 0.5, 0.3, 2]
+    a0, b0 = [0.1, 0.6, 0.3, 0.4, 2]*10,  [0.4, 1.2, 0.8, 1, 5]*10
+    a1, b1 = [0.9, 0.8, 0.9, 1.2, 5]*10,  [0.4, 0.1, 0.5, 0.3, 2]*10
 
     # iterate through all the columns/labels and create a beta distribution for each label
     for i in range(y_pred.shape[1]):
@@ -46,7 +45,7 @@ def random_data_multiclass_classifier() -> Tuple[np.ndarray, np.ndarray]:
 
 
 # Test histogram plot
-def test_hist_plot(random_data_multiclass_classifier):
+def test_hist_plot():
     """
     Test histogram plot.
 
@@ -55,13 +54,14 @@ def test_hist_plot(random_data_multiclass_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_multiclass_classifier
-    print(TEST_RESULTS_PATH)
-    multiclass.plot_y_prob_histogram(y_true=y_true, y_prob=y_prob, save_fig_path=TEST_RESULTS_PATH / "histogram.png")
-    multiclass.plot_y_prob_histogram(y_prob=y_prob, save_fig_path=TEST_RESULTS_PATH / "histogram_classes.png")
+    for num_classes in [2, 3, 4, 5, 10, 16, 25]:
+        y_true, y_prob = random_data_multiclass_classifier(num_classes=num_classes)
+        print(TEST_RESULTS_PATH)
+        multiclass.plot_y_prob_histogram(y_true=y_true, y_prob=y_prob, save_fig_path=TEST_RESULTS_PATH / f"histogram_{num_classes}_classes.png")
+        # multiclass.plot_y_prob_histogram(y_prob=y_prob, save_fig_path=TEST_RESULTS_PATH / "histogram_classes.png")
+        
     
-    
-def test_roc_curve(random_data_multiclass_classifier):
+def test_roc_curve():
     """
     Test roc curve.
     
@@ -81,7 +81,7 @@ def test_roc_curve(random_data_multiclass_classifier):
         return fig_path
     
     
-    y_true, y_prob = random_data_multiclass_classifier
+    y_true, y_prob = random_data_multiclass_classifier(num_classes=3)
     
     confidence_intervals = [None, 0.99]
     highlight_roc_area = [True, False]
