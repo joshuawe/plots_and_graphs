@@ -135,6 +135,8 @@ fig_auroc.show()
 
 + [DALL-E 3](https://openai.com/dall-e-3) created the project logo on 17th October 2023. Prompt used: *Illustration of a stylized graph with colorful lines and bars, representing data visualization, suitable for a project logo named 'plots and graphs'.*
 
++ The [Scientific colour maps](https://www.fabiocrameri.ch/colourmaps/) in the `plotsandgraphs/cmaps` folder [(Crameri 2018)](https://doi.org/10.5281/zenodo.1243862) are used in this library to prevent visual distortion of the data and exclusion of readers with colour-vision deficiencies [(Crameri et al., 2020)](https://www.nature.com/articles/s41467-020-19160-7).
+
 
 # Reference
 
