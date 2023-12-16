@@ -1,10 +1,13 @@
-from typing import Optional, List, Callable, Dict, Tuple, Union
+from typing import Optional, List, Callable, Dict, Tuple, Union, TYPE_CHECKING
 from tqdm import tqdm
 from sklearn.utils import resample
 import numpy as np
 from matplotlib.path import Path
 from matplotlib.patches import BoxStyle
 from matplotlib.colors import LinearSegmentedColormap
+
+if TYPE_CHECKING:
+    from matplotlib.axes import Axes
 
 
 def bootstrap(metric_function: Callable, input_resample: List[np.ndarray], n_bootstraps: int, metric_kwargs: Dict={}) -> List:
@@ -96,7 +99,7 @@ class ExtendedTextBox_v2:
                     closed=True)
 
 
-def set_black_title_box(ax: "maptlotlib.axes.Axes", title=str, backgroundcolor='black', color='white', set_title_kwargs: Dict={}):
+def set_black_title_box(ax: "Axes", title=str, backgroundcolor='black', color='white', set_title_kwargs: Dict={}):
     """
     Sets the title of the given axes with a black bounding box.
     Note: When using `plt.tight_layout()` the box might not have the correct width. First call `plt.tight_layout()` and then `set_black_title_box()`.
@@ -116,7 +119,7 @@ def set_black_title_box(ax: "maptlotlib.axes.Axes", title=str, backgroundcolor='
     bb.set_boxstyle("ext", pad=0.1, width=ax_width) # use custom style
     
     
-def scale_ax_bbox(ax: "maptlotlib.axes.Axes", factor: float):
+def scale_ax_bbox(ax: "Axes", factor: float):
     # Get the current position of the subplot
     box = ax.get_position()
 
@@ -131,7 +134,7 @@ def scale_ax_bbox(ax: "maptlotlib.axes.Axes", factor: float):
 
 
 
-def get_cmap(cmap_name: str, n_colors: Optional[int]=None) -> Tuple[LinearSegmentedColormap, Union[None, Tuple]]:
+def get_cmap(cmap_name: str, n_colors: Optional[int]=None) -> Tuple[LinearSegmentedColormap, Tuple]:
     """
     Loads one of the custom cmaps from the cmaps folder.
 
@@ -156,10 +159,9 @@ def get_cmap(cmap_name: str, n_colors: Optional[int]=None) -> Tuple[LinearSegmen
     cm_data = np.loadtxt(cm_path)
     cmap_name = cmap_name.split('.')[0]
     cmap = LinearSegmentedColormap.from_list(cmap_name, cm_data)
-    if n_colors is not None:
-        color_list = cmap(np.linspace(0, 1, n_colors))
-    else:
-        color_list = None
+    if n_colors is None:
+        n_colors = 10
+    color_list = cmap(np.linspace(0, 1, n_colors))
     return cmap, color_list
 
 
