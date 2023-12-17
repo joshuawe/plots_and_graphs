@@ -54,7 +54,7 @@ def test_hist_plot():
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    for num_classes in [2, 3, 4, 5, 10, 16, 25]:
+    for num_classes in [1, 2, 3, 4, 5, 10, 16, 25]:
         y_true, y_prob = random_data_multiclass_classifier(num_classes=num_classes)
         print(TEST_RESULTS_PATH)
         multiclass.plot_y_prob_histogram(y_true=y_true, y_prob=y_prob, save_fig_path=TEST_RESULTS_PATH / f"histogram_{num_classes}_classes.png")

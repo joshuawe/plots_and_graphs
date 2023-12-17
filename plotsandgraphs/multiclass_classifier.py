@@ -20,7 +20,7 @@ from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
 from tqdm import tqdm
 
-from plotsandgraphs.utils import bootstrap, set_black_title_box, scale_ax_bbox, get_cmap
+from plotsandgraphs.utils import bootstrap, set_black_title_boxes, scale_ax_bbox, get_cmap
 
 
 def plot_roc_curve(
@@ -32,7 +32,7 @@ def plot_roc_curve(
     figsize: Optional[Tuple[float, float]] = None,
     class_labels: Optional[List[str]] = None,
     split_plots: bool = True,
-    save_fig_path=Optional[Union[str, Tuple[str, str]]],
+    save_fig_path:Optional[Union[str, Tuple[str, str]]] = None,
 ) -> Tuple[Figure, Union[Figure, None]]:
     """
     Creates two plots.
@@ -188,22 +188,11 @@ def plot_roc_curve(
     for i in range(num_classes, len(axes.flat)):
         axes.flat[i].axis("off")
 
-    # make the subplot tiles (and black boxes)
-    for i in range(num_classes):
-        set_black_title_box(axes.flat[i], f"Class {i}")
-    plt.tight_layout(h_pad=1.5)
-    # make the subplot tiles (and black boxes)
-    #  First time to get the approx. correct spacing with plt.tight_layout()
-    #  Second time to get the correct width of the black box
-    #  Thank you matplotlib ...
-    for i in range(num_classes):
-        set_black_title_box(
-            axes.flat[i],
-            f"Class {i}",
-            set_title_kwargs={
-                "fontdict": {"fontname": "Arial Black", "fontweight": "bold"}
-            },
-        )
+    # create the subplot tiles (and black boxes)
+    set_black_title_boxes(axes.flat[:num_classes], class_labels)
+        
+    
+       
 
     # ---------- AUROC overview plot comparing classes ----------
     # Make an AUROC overview plot comparing the aurocs per class and combined
@@ -281,13 +270,12 @@ def plot_roc_curve(
 def plot_y_prob_histogram(
     y_true: np.ndarray, y_prob: Optional[np.ndarray] = None, save_fig_path=None
 ) -> Figure:
+    num_classes = y_true.shape[-1]
+    class_labels = [f"Class {i}" for i in range(num_classes)]
+    
     # Aiming for a square plot
-    plot_cols = np.ceil(np.sqrt(y_true.shape[-1])).astype(
-        int
-    )  # Number of plots in a row
-    plot_rows = np.ceil(y_true.shape[-1] / plot_cols).astype(
-        int
-    )  # Number of plots in a column
+    plot_cols = np.ceil(np.sqrt(num_classes)).astype(int)  # Number of plots in a row # noqa
+    plot_rows = np.ceil(num_classes / plot_cols).astype(int)  # Number of plots in a column # noqa
     fig, axes = plt.subplots(
         nrows=plot_rows,
         ncols=plot_cols,
@@ -298,11 +286,11 @@ def plot_y_prob_histogram(
     plt.suptitle("Predicted probability histogram")
 
     # Flatten axes if there is only one class, even though this function is designed for multiclasses
-    if y_true.shape[-1] == 1:
+    if num_classes == 1:
         axes = np.array([axes])
 
     for i, ax in enumerate(axes.flat):
-        if i >= y_true.shape[-1]:
+        if i >= num_classes:
             ax.axis("off")
             continue
 
@@ -327,7 +315,7 @@ def plot_y_prob_histogram(
                 linewidth=2,
                 rwidth=1,
             )
-            ax.set_title(f"Class {i}")
+            ax.set_title(class_labels[i])
             ax.set_xlim((-0.005, 1.0))
             # if subplot in first column
             if (i % plot_cols) == 0:
@@ -342,7 +330,8 @@ def plot_y_prob_histogram(
             if i == 0:
                 ax.legend()
 
-    plt.tight_layout()
+    # create the subplot tiles (and black boxes)
+    set_black_title_boxes(axes.flat[:num_classes], class_labels)
 
     # save plot
     if save_fig_path is not None:

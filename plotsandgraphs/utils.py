@@ -1,7 +1,8 @@
-from typing import Optional, List, Callable, Dict, Tuple, Union, TYPE_CHECKING
+from typing import Optional, List, Callable, Dict, Tuple, Union, TYPE_CHECKING, Literal
 from tqdm import tqdm
 from sklearn.utils import resample
 import numpy as np
+import matplotlib.pyplot as plt
 from matplotlib.path import Path
 from matplotlib.patches import BoxStyle
 from matplotlib.colors import LinearSegmentedColormap
@@ -99,8 +100,9 @@ class ExtendedTextBox_v2:
                     closed=True)
 
 
-def set_black_title_box(ax: "Axes", title=str, backgroundcolor='black', color='white', set_title_kwargs: Dict={}):
+def _set_black_title_box(ax: "Axes", title:str, backgroundcolor='black', color='white', title_kwargs: Optional[Dict]=None):
     """
+    Note: Do not use this function by itself, instead use `set_black_title_boxes()`.
     Sets the title of the given axes with a black bounding box.
     Note: When using `plt.tight_layout()` the box might not have the correct width. First call `plt.tight_layout()` and then `set_black_title_box()`.
 
@@ -111,12 +113,48 @@ def set_black_title_box(ax: "Axes", title=str, backgroundcolor='black', color='w
     - color: The color of the title text (default: 'white').
     - set_title_kwargs: Keyword arguments to pass to `ax.set_title()`.
     """
+    if title_kwargs is None:
+        title_kwargs = {'fontdict': {"fontname": "Arial Black", "fontweight": "bold"}}
     BoxStyle._style_list["ext"] = ExtendedTextBox_v2 
     ax_width = ax.get_window_extent().width
     # make title with black bounding box
-    title = ax.set_title(title, backgroundcolor=backgroundcolor, color=color, **set_title_kwargs)
-    bb = title.get_bbox_patch() # get bbox from title
+    title_instance = ax.set_title(title, backgroundcolor=backgroundcolor, color=color, **title_kwargs)
+    bb = title_instance.get_bbox_patch() # get bbox from title
     bb.set_boxstyle("ext", pad=0.1, width=ax_width) # use custom style
+    
+    
+def set_black_title_boxes(axes: "np.ndarray[Axes]", titles: List[str], backgroundcolor='black', color='white', title_kwargs: Optional[Dict]=None, tight_layout_kwargs: Dict={}):
+    """
+    Creates black boxes for the subtitles above the given axes with the given titles. The subtitles are centered above the axes.
+
+    Parameters
+    ----------
+    axes : np.ndarray["Axes"]
+        np.ndarray of matplotlib.axes.Axes objects. (Usually returned by plt.subplots() call)
+    titles : List[str]
+        List of titles for the axes. Same length as axes.
+    backgroundcolor : str, optional
+        Background color of boxes, by default 'black'
+    color : str, optional
+        Font color, by default 'white'
+    title_kwargs : Dict, optional
+        kwargs for the `ax.set_title()` call, by default {}
+    tight_layout_kwargs : Dict, optional
+        kwargs for the `plt.tight_layout()` call, by default {}
+    """
+
+    for i, ax in enumerate(axes.flat):
+        _set_black_title_box(ax, titles[i], backgroundcolor, color, title_kwargs)
+        
+    plt.tight_layout(**tight_layout_kwargs)
+    
+    for i, ax in enumerate(axes.flat):
+        _set_black_title_box(ax, titles[i], backgroundcolor, color, title_kwargs)
+        
+        
+    return
+    
+    
     
     
 def scale_ax_bbox(ax: "Axes", factor: float):

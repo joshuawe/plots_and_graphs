@@ -64,9 +64,9 @@ Furthermore, this library presents other useful visualizations, such as **compar
 |                    ROC Curve (AUROC) with bootstrapping             |                 Precision-Recall Curve                          |                  y_prob histogram                                 |
 
 
-| <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/raincloud.png?raw=true" width="300" alt="Your Image">        |  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> | <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
+| <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/multiclass/histogram_4_classes.png?raw=true" width="300" alt="Your Image">        |  <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/multiclass/roc_curves_multiclass.png?raw=true" width="300" alt=""> | <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
 |:--------------------------------------------------:|:-------------------------------------------------:| :-------------------------------------------------:|
-|                    Raincloud              |                                                | |
+|                    Histogram (y_scores)              |    ROC curves (AUROC) with bootstrapping                                            | |
 
 
 
