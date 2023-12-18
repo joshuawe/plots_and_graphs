@@ -268,10 +268,31 @@ def plot_roc_curve(
 
 
 def plot_y_prob_histogram(
-    y_true: np.ndarray, y_prob: Optional[np.ndarray] = None, save_fig_path=None
+    y_true: np.ndarray, y_score: Optional[np.ndarray] = None, save_fig_path: Optional[str]=None
 ) -> Figure:
+    """
+    Histogram plot that is intended to show the distribution of the predicted probabilities for different classes, where the the different classes (y_true==0 and y_true==1) are plotted in different colors. 
+    Limitations: Does not work for samples, that can be part of multiple classes (e.g. multilabel classification).
+
+    Parameters
+    ----------
+    y_true : np.ndarray
+        The actual labels of the data. Either 0 or 1. One hot encoded.
+    y_score : Optional[np.ndarray], optional
+        The y_scores as predictions of a model for a class, by default None
+    save_fig_path : Optional[str], optional
+        Path to folder where the figure should be saved. If None then plot is not saved, by default None.
+
+    Returns
+    -------
+    Figure
+        The figure of the histogram plot.
+    """
+    
     num_classes = y_true.shape[-1]
     class_labels = [f"Class {i}" for i in range(num_classes)]
+    
+    cmap, colors = get_cmap("roma", n_colors=2)  # 2 colors for y==0 and y==1 per class
     
     # Aiming for a square plot
     plot_cols = np.ceil(np.sqrt(num_classes)).astype(int)  # Number of plots in a row # noqa
@@ -294,15 +315,16 @@ def plot_y_prob_histogram(
             ax.axis("off")
             continue
 
-        if y_prob is not None:
+        if y_score is not None:
             y_true_i = y_true[:, i]
-            y_prob_i = y_prob[:, i]
+            y_prob_i = y_score[:, i]
             ax.hist(
                 y_prob_i[y_true_i == 0],
                 bins=10,
                 label="$\\hat{y} = 0$",
                 alpha=alpha,
-                edgecolor="midnightblue",
+                edgecolor="black",
+                color=colors[0],
                 linewidth=2,
                 rwidth=1,
             )
@@ -311,7 +333,8 @@ def plot_y_prob_histogram(
                 bins=10,
                 label="$\\hat{y} = 1$",
                 alpha=alpha,
-                edgecolor="midnightblue",
+                edgecolor="black",
+                color=colors[1],
                 linewidth=2,
                 rwidth=1,
             )
