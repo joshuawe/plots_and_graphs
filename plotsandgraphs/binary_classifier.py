@@ -449,16 +449,16 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, sa
     return fig
 
 
-def plot_y_prob_histogram(y_prob: np.ndarray, y_true: Optional[np.ndarray] = None, save_fig_path=None) -> Figure:
+def plot_y_score_histogram(y_true: Optional[np.ndarray], y_score: np.ndarray = None, save_fig_path=None) -> Figure:
     """
-    Provides a histogram for the predicted probabilities of a binary classifier. If ```y_true``` is provided, it divides the ```y_prob``` values into the two classes and plots them jointly into the same plot with different colors.
+    Provides a histogram for the predicted probabilities of a binary classifier. If ```y_true``` is provided, it divides the ```y_score``` values into the two classes and plots them jointly into the same plot with different colors.
 
     Parameters
     ----------
-    y_prob : np.ndarray
-        The output probabilities of the classifier. Between 0 and 1.
     y_true : Optional[np.ndarray], optional
         The true class labels, by default None
+    y_score : np.ndarray
+        The output probabilities of the classifier. Between 0 and 1.
     save_fig_path : _type_, optional
         Path where to save figure, by default None
 
@@ -471,13 +471,13 @@ def plot_y_prob_histogram(y_prob: np.ndarray, y_true: Optional[np.ndarray] = Non
     ax = fig.add_subplot(111)
 
     if y_true is None:
-        ax.hist(y_prob, bins=10, alpha=0.9, edgecolor="midnightblue", linewidth=2, rwidth=1)
+        ax.hist(y_score, bins=10, alpha=0.9, edgecolor="midnightblue", linewidth=2, rwidth=1)
         # same histogram as above, but with border lines
         # ax.hist(y_prob, bins=10, alpha=0.5, edgecolor='black', linewidth=1.2)
     else:
         alpha = 0.6
         ax.hist(
-            y_prob[y_true == 0],
+            y_score[y_true == 0],
             bins=10,
             alpha=alpha,
             edgecolor="midnightblue",
@@ -486,7 +486,7 @@ def plot_y_prob_histogram(y_prob: np.ndarray, y_true: Optional[np.ndarray] = Non
             label="$\\hat{y} = 0$",
         )
         ax.hist(
-            y_prob[y_true == 1],
+            y_score[y_true == 1],
             bins=10,
             alpha=alpha,
             edgecolor="darkred",

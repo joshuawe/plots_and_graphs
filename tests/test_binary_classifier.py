@@ -23,10 +23,10 @@ def random_data_binary_classifier() -> Tuple[np.ndarray, np.ndarray]:
         [0, 1], n_samples, p=[0.4, 0.6]
     )  # the true class labels 0 or 1, with class imbalance 40:60
 
-    y_prob = np.zeros(y_true.shape)  # a model's probability of class 1 predictions
-    y_prob[y_true == 1] = np.random.beta(1, 0.6, y_prob[y_true == 1].shape)
-    y_prob[y_true == 0] = np.random.beta(0.5, 1, y_prob[y_true == 0].shape)
-    return y_true, y_prob
+    y_score = np.zeros(y_true.shape)  # a model's probability of class 1 predictions
+    y_score[y_true == 1] = np.random.beta(1, 0.6, y_score[y_true == 1].shape)
+    y_score[y_true == 0] = np.random.beta(0.5, 1, y_score[y_true == 0].shape)
+    return y_true, y_score
 
 
 # Test histogram plot
@@ -39,10 +39,10 @@ def test_hist_plot(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
+    y_true, y_score = random_data_binary_classifier
     print(TEST_RESULTS_PATH)
-    binary.plot_y_prob_histogram(y_prob, save_fig_path=TEST_RESULTS_PATH / "histogram.png")
-    binary.plot_y_prob_histogram(y_prob, y_true, save_fig_path=TEST_RESULTS_PATH / "histogram_2_classes.png")
+    binary.plot_y_score_histogram(y_true=None, y_score=y_score, save_fig_path=TEST_RESULTS_PATH / "histogram.png")
+    binary.plot_y_score_histogram(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "histogram_2_classes.png")
 
 
 # test roc curve without bootstrapping
@@ -55,8 +55,8 @@ def test_roc_curve(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
-    binary.plot_roc_curve(y_true, y_prob, save_fig_path=TEST_RESULTS_PATH / "roc_curve.png")
+    y_true, y_score = random_data_binary_classifier
+    binary.plot_roc_curve(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "roc_curve.png")
 
 
 # test roc curve with bootstrapping
@@ -69,9 +69,9 @@ def test_roc_curve_bootstrap(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
+    y_true, y_score = random_data_binary_classifier
     binary.plot_roc_curve(
-        y_true, y_prob, n_bootstraps=10000, save_fig_path=TEST_RESULTS_PATH / "roc_curve_bootstrap.png"
+        y_true, y_score, n_bootstraps=10000, save_fig_path=TEST_RESULTS_PATH / "roc_curve_bootstrap.png"
     )
 
 
@@ -85,8 +85,8 @@ def test_pr_curve(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
-    binary.plot_pr_curve(y_true, y_prob, save_fig_path=TEST_RESULTS_PATH / "pr_curve.png")
+    y_true, y_score = random_data_binary_classifier
+    binary.plot_pr_curve(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "pr_curve.png")
 
 
 # test confusion matrix
@@ -99,8 +99,8 @@ def test_confusion_matrix(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
-    binary.plot_confusion_matrix(y_true, y_prob, save_fig_path=TEST_RESULTS_PATH / "confusion_matrix.png")
+    y_true, y_score = random_data_binary_classifier
+    binary.plot_confusion_matrix(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "confusion_matrix.png")
 
 
 # test classification report
@@ -113,8 +113,8 @@ def test_classification_report(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
-    binary.plot_classification_report(y_true, y_prob, save_fig_path=TEST_RESULTS_PATH / "classification_report.png")
+    y_true, y_score = random_data_binary_classifier
+    binary.plot_classification_report(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "classification_report.png")
 
 # test calibration curve
 def test_calibration_curve(random_data_binary_classifier):
@@ -126,8 +126,8 @@ def test_calibration_curve(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
-    binary.plot_calibration_curve(y_prob, y_true, save_fig_path=TEST_RESULTS_PATH / "calibration_curve.png")
+    y_true, y_score = random_data_binary_classifier
+    binary.plot_calibration_curve(y_score, y_true, save_fig_path=TEST_RESULTS_PATH / "calibration_curve.png")
 
 # test accuracy
 def test_accuracy(random_data_binary_classifier):
@@ -139,5 +139,5 @@ def test_accuracy(random_data_binary_classifier):
     random_data_binary_classifier : Tuple[np.ndarray, np.ndarray]
         The simulated data.
     """
-    y_true, y_prob = random_data_binary_classifier
-    binary.plot_accuracy(y_true, y_prob, save_fig_path=TEST_RESULTS_PATH / "accuracy.png")
+    y_true, y_score = random_data_binary_classifier
+    binary.plot_accuracy(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "accuracy.png")
