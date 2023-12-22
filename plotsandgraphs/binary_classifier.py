@@ -354,16 +354,16 @@ def plot_roc_curve(
     return fig
 
 
-def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, save_fig_path=None) -> Figure:
+def plot_calibration_curve(y_true: np.ndarray, y_score: np.ndarray, n_bins=10, save_fig_path=None) -> Figure:
     """
     Creates calibration plot for a binary classifier and calculates the ECE.
 
     Parameters
     ----------
-    y_prob : np.ndarray
-        The output probabilities of the classifier. Between 0 and 1.
     y_true : np.ndarray
         The actual labels of the data. Either 0 or 1.
+    y_score : np.ndarray
+        The output probabilities of the classifier. Between 0 and 1.
     n_bins : int
         The number of bins to use for the calibration curve.
     save_fig_path : str, optional
@@ -376,13 +376,13 @@ def plot_calibration_curve(y_prob: np.ndarray, y_true: np.ndarray, n_bins=10, sa
     ece : float
         The expected calibration error.
     """
-    prob_true, prob_pred = calibration_curve(y_true, y_prob, n_bins=n_bins, strategy="uniform")
+    prob_true, prob_pred = calibration_curve(y_true, y_score, n_bins=n_bins, strategy="uniform")
 
     # Find the number of samples in each bin
-    bin_counts = np.histogram(y_prob, bins=n_bins, range=(0, 1))[0]
+    bin_counts = np.histogram(y_score, bins=n_bins, range=(0, 1))[0]
 
     # Calculate the weighted absolute difference (ECE)
-    ece = np.abs(prob_pred - prob_true) * (bin_counts / len(y_prob))
+    ece = np.abs(prob_pred - prob_true) * (bin_counts / len(y_score))
     ece = ece.sum().round(2)
 
     fig = plt.figure(figsize=(5, 5))
