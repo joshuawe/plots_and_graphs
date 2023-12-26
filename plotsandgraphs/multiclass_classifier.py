@@ -267,7 +267,7 @@ def plot_roc_curve(
     return fig, fig_aurocs
 
 
-def plot_y_prob_histogram(
+def plot_y_score_histogram(
     y_true: np.ndarray, y_score: Optional[np.ndarray] = None, save_fig_path: Optional[str]=None
 ) -> Figure:
     """

@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 import plotsandgraphs.binary_classifier as binary
 
-TEST_RESULTS_PATH = Path(r"tests\test_results")
+TEST_RESULTS_PATH = Path(r"tests\test_results\binary_classifier")
 
 
 @pytest.fixture(scope="module")

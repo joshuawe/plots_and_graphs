@@ -580,6 +580,8 @@ def plot_pr_curve(
 
     # Save the figure if save_fig_path is specified
     if save_fig_path:
-        plt.savefig(save_fig_path, bbox_inches="tight")
+        path = Path(save_fig_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(save_fig_path, bbox_inches="tight")
 
     return fig
