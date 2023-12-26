@@ -6,7 +6,7 @@ import pytest
 # import plotsandgraphs.binary_classifier as binary
 import plotsandgraphs.multiclass_classifier as multiclass
 
-TEST_RESULTS_PATH = Path(r"tests\test_results")
+TEST_RESULTS_PATH = Path(r"tests\test_results\multi_class_classifier")
 
 
 # @pytest.fixture(scope="module")
