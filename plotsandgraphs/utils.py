@@ -1,4 +1,4 @@
-from typing import Optional, List, Callable, Dict, Tuple, Union, TYPE_CHECKING, Literal
+from typing import Optional, List, Callable, Dict, Tuple, TYPE_CHECKING
 from tqdm import tqdm
 from sklearn.utils import resample
 import numpy as np
@@ -11,7 +11,12 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
 
 
-def bootstrap(metric_function: Callable, input_resample: List[np.ndarray], n_bootstraps: int, metric_kwargs: Dict={}) -> List:
+def bootstrap(
+    metric_function: Callable,
+    input_resample: List[np.ndarray],
+    n_bootstraps: int,
+    metric_kwargs: Dict = {},
+) -> List:
     """
     A bootstrapping function for a metric function. The metric function should take the same number of arguments as the length of input_resample.
 
@@ -33,29 +38,28 @@ def bootstrap(metric_function: Callable, input_resample: List[np.ndarray], n_boo
     """
     results = []
     # for each bootstrap iteration
-    for _ in tqdm(range(n_bootstraps), desc='Bootsrapping', leave=True):
+    for _ in tqdm(range(n_bootstraps), desc="Bootsrapping", leave=True):
         # resample indices with replacement
         indices = resample(np.arange(len(input_resample[0])), replace=True)
         input_resampled = [x[indices] for x in input_resample]
         # calculate metric
         result = metric_function(*input_resampled, **metric_kwargs)
-        
-        results.append(result)
-        
-    return results
 
+        results.append(result)
+
+    return results
 
 
 class ExtendedTextBox_v2:
     """
     Black background boxes for titles in maptlolib subplots
-    
+
     From:
     https://stackoverflow.com/questions/40796117/how-do-i-make-the-width-of-the-title-box-span-the-entire-plot
     https://matplotlib.org/stable/gallery/userdemo/custom_boxstyle01.html?highlight=boxstyle+_style_list
     """
 
-    def __init__(self, pad=0.3, width=500.):
+    def __init__(self, pad=0.3, width=500.0):
         """
         The arguments must be floats and have default values.
 
@@ -85,22 +89,25 @@ class ExtendedTextBox_v2:
         # padding
         pad = mutation_size * self.pad
         # width and height with padding added
-        #width = width + 2.*pad
-        height = height +  3 * pad
+        # width = width + 2.*pad
+        height = height + 3 * pad
         # boundary of the padded box
         y0 = y0 - pad  # change this to move the text
-        y1 = y0 + height 
+        y1 = y0 + height
         _x0 = x0
-        x0 = _x0 +width /2. - self.width/2.
-        x1 = _x0 +width /2. + self.width/2.
+        x0 = _x0 + width / 2.0 - self.width / 2.0
+        x1 = _x0 + width / 2.0 + self.width / 2.0
         # return the new path
-        return Path([(x0, y0),
-                     (x1, y0), (x1, y1), (x0, y1),
-                     (x0, y0)],
-                    closed=True)
+        return Path([(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)], closed=True)
 
 
-def _set_black_title_box(ax: "Axes", title:str, backgroundcolor='black', color='white', title_kwargs: Optional[Dict]=None):
+def _set_black_title_box(
+    ax: "Axes",
+    title: str,
+    backgroundcolor="black",
+    color="white",
+    title_kwargs: Optional[Dict] = None,
+):
     """
     Note: Do not use this function by itself, instead use `set_black_title_boxes()`.
     Sets the title of the given axes with a black bounding box.
@@ -114,16 +121,25 @@ def _set_black_title_box(ax: "Axes", title:str, backgroundcolor='black', color='
     - set_title_kwargs: Keyword arguments to pass to `ax.set_title()`.
     """
     if title_kwargs is None:
-        title_kwargs = {'fontdict': {"fontname": "Arial Black", "fontweight": "bold"}}
-    BoxStyle._style_list["ext"] = ExtendedTextBox_v2 
+        title_kwargs = {"fontdict": {"fontname": "Arial Black", "fontweight": "bold"}}
+    BoxStyle._style_list["ext"] = ExtendedTextBox_v2
     ax_width = ax.get_window_extent().width
     # make title with black bounding box
-    title_instance = ax.set_title(title, backgroundcolor=backgroundcolor, color=color, **title_kwargs)
-    bb = title_instance.get_bbox_patch() # get bbox from title
-    bb.set_boxstyle("ext", pad=0.1, width=ax_width) # use custom style
-    
-    
-def set_black_title_boxes(axes: "np.ndarray[Axes]", titles: List[str], backgroundcolor='black', color='white', title_kwargs: Optional[Dict]=None, tight_layout_kwargs: Dict={}):
+    title_instance = ax.set_title(
+        title, backgroundcolor=backgroundcolor, color=color, **title_kwargs
+    )
+    bb = title_instance.get_bbox_patch()  # get bbox from title
+    bb.set_boxstyle("ext", pad=0.1, width=ax_width)  # use custom style
+
+
+def set_black_title_boxes(
+    axes: "np.ndarray[Axes]",
+    titles: List[str],
+    backgroundcolor="black",
+    color="white",
+    title_kwargs: Optional[Dict] = None,
+    tight_layout_kwargs: Dict = {},
+):
     """
     Creates black boxes for the subtitles above the given axes with the given titles. The subtitles are centered above the axes.
 
@@ -145,18 +161,15 @@ def set_black_title_boxes(axes: "np.ndarray[Axes]", titles: List[str], backgroun
 
     for i, ax in enumerate(axes.flat):
         _set_black_title_box(ax, titles[i], backgroundcolor, color, title_kwargs)
-        
+
     plt.tight_layout(**tight_layout_kwargs)
-    
+
     for i, ax in enumerate(axes.flat):
         _set_black_title_box(ax, titles[i], backgroundcolor, color, title_kwargs)
-        
-        
+
     return
-    
-    
-    
-    
+
+
 def scale_ax_bbox(ax: "Axes", factor: float):
     # Get the current position of the subplot
     box = ax.get_position()
@@ -167,12 +180,13 @@ def scale_ax_bbox(ax: "Axes", factor: float):
 
     # Set the new position
     ax.set_position([box.x0 + adjustment, box.y0, new_width, box.height])
-    
+
     return
 
 
-
-def get_cmap(cmap_name: str, n_colors: Optional[int]=None) -> Tuple[LinearSegmentedColormap, Tuple]:
+def get_cmap(
+    cmap_name: str, n_colors: Optional[int] = None
+) -> Tuple[LinearSegmentedColormap, Tuple]:
     """
     Loads one of the custom cmaps from the cmaps folder.
 
@@ -185,23 +199,19 @@ def get_cmap(cmap_name: str, n_colors: Optional[int]=None) -> Tuple[LinearSegmen
     -------
     Tuple[LinearSegmentedColormap, Union[None, Tuple]]
         A tuple of the cmap and a list of colors if n_colors is not None.
-        
+
     Example
     -------
     >>> cmap_name = 'hawaii'
     >>> cmap, color_list = get_cmap(cmap_name, n_colors=10)
     """
     from pathlib import Path as PathClass
-    
-    cm_path = PathClass(__file__).parent / ('cmaps/' + cmap_name + '.txt')
+
+    cm_path = PathClass(__file__).parent / ("cmaps/" + cmap_name + ".txt")
     cm_data = np.loadtxt(cm_path)
-    cmap_name = cmap_name.split('.')[0]
+    cmap_name = cmap_name.split(".")[0]
     cmap = LinearSegmentedColormap.from_list(cmap_name, cm_data)
     if n_colors is None:
         n_colors = 10
     color_list = cmap(np.linspace(0, 1, n_colors))
     return cmap, color_list
-
-
-
-    

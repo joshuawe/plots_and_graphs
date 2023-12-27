@@ -43,7 +43,7 @@ Furthermore, this library presents other useful visualizations, such as **compar
     - Classification Report
     - Confusion Matrix
     - ROC curve (AUROC)
-    - y_prob histogram
+    - y_score histogram
 
 - *multi-class classifier*
 
@@ -61,7 +61,7 @@ Furthermore, this library presents other useful visualizations, such as **compar
 
 | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/roc_curve_bootstrap.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/pr_curve.png?raw=true" width="300" alt="Your Image">        | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/y_prob_histogram.png?raw=true" width="300" alt="Your Image">  |
 |:--------------------------------------------------:|:----------------------------------------------------------:|:-------------------------------------------------:|
-|                    ROC Curve (AUROC) with bootstrapping             |                 Precision-Recall Curve                          |                  y_prob histogram                                 |
+|                    ROC Curve (AUROC) with bootstrapping             |                 Precision-Recall Curve                          |                  y_score histogram                                 |
 
 
 | <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/multiclass/histogram_4_classes.png?raw=true" width="300" alt="Your Image">        |  <img src="https://github.com/joshuawe/plots_and_graphs/blob/main/images/multiclass/roc_curves_multiclass.png?raw=true" width="300" alt=""> | <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" height="300" alt=""> |
@@ -95,34 +95,28 @@ pip install -e .
 
 # Usage
 
-Example usage of results from a binary classifier for a calibration curve.
+Get all classification metrics with **ONE** line of code. Here, for a binary classifier:
 
 ```python
-import matplotlib.pyplot as plt
-import numpy as np
 import plotsandgraphs as pandg
+# ...
+pandg.pipeline.binary_classifier(y_true, y_score)
+```
 
-# create some predictions of a hypothetical binary classifier
-n_samples = 1000
-y_true = np.random.choice([0,1], n_samples, p=[0.4, 0.6])   # the true class labels 0 or 1, with class imbalance 40:60
+Or with some more configs:
+```Python
+configs = {
+  'roc': {'n_bootstraps': 10000},
+  'pr': {'figsize': (8,10)}
+}
+pandg.pipeline.binary_classifier(y_true, y_score, save_fig_path='results/metrics', file_type='png', plot_kwargs=configs)
+```
 
-y_prob = np.zeros(y_true.shape)   # a model's probability of class 1 predictions
-y_prob[y_true==1] = np.random.beta(1, 0.6, y_prob[y_true==1].shape)
-y_prob[y_true==0] = np.random.beta(0.5, 1, y_prob[y_true==0].shape)
+For multiclass classification:
 
-# show prob distribution
-fig_hist = pandg.binary_classifier.plot_y_prob_histogram(y_prob, y_true, save_fig_path=None)
-
-# create calibration curve
-fig_auroc = pandg.binary_classifier.plot_calibration_curve(y_prob, y_true, save_fig_path=None)
-
-
-# --- OPTIONAL: Customize figure ---
-# get axis of figure and change title
-axes = fig_auroc.get_axes()
-ax0 = axes[0]
-ax0.set_title('New Title for Calibration Plot')
-fig_auroc.show()
+```Python
+# with multiclass data y_true (one-hot encoded) and y_score
+pandg.pipeline.multiclass_classifier(y_true, y_score)
 ```
 
 # Requirements

@@ -41,8 +41,12 @@ def test_hist_plot(random_data_binary_classifier):
     """
     y_true, y_score = random_data_binary_classifier
     print(TEST_RESULTS_PATH)
-    binary.plot_y_score_histogram(y_true=None, y_score=y_score, save_fig_path=TEST_RESULTS_PATH / "histogram.png")
-    binary.plot_y_score_histogram(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "histogram_2_classes.png")
+    binary.plot_y_score_histogram(
+        y_true=None, y_score=y_score, save_fig_path=TEST_RESULTS_PATH / "histogram.png"
+    )
+    binary.plot_y_score_histogram(
+        y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "histogram_2_classes.png"
+    )
 
 
 # test roc curve without bootstrapping
@@ -56,7 +60,9 @@ def test_roc_curve(random_data_binary_classifier):
         The simulated data.
     """
     y_true, y_score = random_data_binary_classifier
-    binary.plot_roc_curve(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "roc_curve.png")
+    binary.plot_roc_curve(
+        y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "roc_curve.png"
+    )
 
 
 # test roc curve with bootstrapping
@@ -71,7 +77,10 @@ def test_roc_curve_bootstrap(random_data_binary_classifier):
     """
     y_true, y_score = random_data_binary_classifier
     binary.plot_roc_curve(
-        y_true, y_score, n_bootstraps=10000, save_fig_path=TEST_RESULTS_PATH / "roc_curve_bootstrap.png"
+        y_true,
+        y_score,
+        n_bootstraps=10000,
+        save_fig_path=TEST_RESULTS_PATH / "roc_curve_bootstrap.png",
     )
 
 
@@ -86,7 +95,9 @@ def test_pr_curve(random_data_binary_classifier):
         The simulated data.
     """
     y_true, y_score = random_data_binary_classifier
-    binary.plot_pr_curve(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "pr_curve.png")
+    binary.plot_pr_curve(
+        y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "pr_curve.png"
+    )
 
 
 # test confusion matrix
@@ -100,7 +111,9 @@ def test_confusion_matrix(random_data_binary_classifier):
         The simulated data.
     """
     y_true, y_score = random_data_binary_classifier
-    binary.plot_confusion_matrix(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "confusion_matrix.png")
+    binary.plot_confusion_matrix(
+        y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "confusion_matrix.png"
+    )
 
 
 # test classification report
@@ -114,7 +127,10 @@ def test_classification_report(random_data_binary_classifier):
         The simulated data.
     """
     y_true, y_score = random_data_binary_classifier
-    binary.plot_classification_report(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "classification_report.png")
+    binary.plot_classification_report(
+        y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "classification_report.png"
+    )
+
 
 # test calibration curve
 def test_calibration_curve(random_data_binary_classifier):
@@ -127,7 +143,10 @@ def test_calibration_curve(random_data_binary_classifier):
         The simulated data.
     """
     y_true, y_score = random_data_binary_classifier
-    binary.plot_calibration_curve(y_score, y_true, save_fig_path=TEST_RESULTS_PATH / "calibration_curve.png")
+    binary.plot_calibration_curve(
+        y_score, y_true, save_fig_path=TEST_RESULTS_PATH / "calibration_curve.png"
+    )
+
 
 # test accuracy
 def test_accuracy(random_data_binary_classifier):
@@ -140,4 +159,6 @@ def test_accuracy(random_data_binary_classifier):
         The simulated data.
     """
     y_true, y_score = random_data_binary_classifier
-    binary.plot_accuracy(y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "accuracy.png")
+    binary.plot_accuracy(
+        y_true, y_score, save_fig_path=TEST_RESULTS_PATH / "accuracy.png"
+    )
