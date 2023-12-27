@@ -20,7 +20,12 @@ from sklearn.calibration import calibration_curve
 from sklearn.utils import resample
 from tqdm import tqdm
 
-from plotsandgraphs.utils import bootstrap, set_black_title_boxes, scale_ax_bbox, get_cmap
+from plotsandgraphs.utils import (
+    bootstrap,
+    set_black_title_boxes,
+    scale_ax_bbox,
+    get_cmap,
+)
 
 
 def plot_roc_curve(
@@ -31,8 +36,8 @@ def plot_roc_curve(
     n_bootstraps: int = 1,
     figsize: Optional[Tuple[float, float]] = None,
     class_labels: Optional[List[str]] = None,
-    split_plots: bool = True,
-    save_fig_path:Optional[Union[str, Tuple[str, str]]] = None,
+    split_plots: bool = False,
+    save_fig_path: Optional[Union[str, Tuple[str, str]]] = None,
 ) -> Tuple[Figure, Union[Figure, None]]:
     """
     Creates two plots.
@@ -59,7 +64,7 @@ def plot_roc_curve(
     class_labels : List[str], optional
         The labels of the classes. By default None.
     split_plots : bool, optional
-        Whether to split the plots into two separate figures. By default True.
+        Whether to split the plots into two separate figures. By default False.
     save_fig_path : Optional[Union[str, Tuple[str, str]]], optional
         Path to folder where the figure(s) should be saved. If None then plot is not saved, by default None. If `split_plots` is False, then a single str is required. If True, then a tuple of strings (Pos 1 Roc curves comparison, Pos 2 AUROCs comparison). E.g. `save_fig_path=('figures/roc_curves.png', 'figures/aurocs_comparison.png')`.
 
@@ -190,9 +195,6 @@ def plot_roc_curve(
 
     # create the subplot tiles (and black boxes)
     set_black_title_boxes(axes.flat[:num_classes], class_labels)
-        
-    
-       
 
     # ---------- AUROC overview plot comparing classes ----------
     # Make an AUROC overview plot comparing the aurocs per class and combined
@@ -260,18 +262,20 @@ def plot_roc_curve(
         fig_aurocs.savefig(path, bbox_inches="tight")
     # save roc curves plot
     if save_fig_path is not None:
-        path = save_fig_path[0] if split_plots is True else save_fig_path
-        path = Path(path)
+        path = save_fig_path[0] if split_plots is True else save_fig_path # type: ignore 
+        path = Path(path) # type: ignore
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, bbox_inches="tight")
     return fig, fig_aurocs
 
 
-def plot_y_prob_histogram(
-    y_true: np.ndarray, y_score: Optional[np.ndarray] = None, save_fig_path: Optional[str]=None
+def plot_y_score_histogram(
+    y_true: np.ndarray,
+    y_score: Optional[np.ndarray] = None,
+    save_fig_path: Optional[str] = None,
 ) -> Figure:
     """
-    Histogram plot that is intended to show the distribution of the predicted probabilities for different classes, where the the different classes (y_true==0 and y_true==1) are plotted in different colors. 
+    Histogram plot that is intended to show the distribution of the predicted probabilities for different classes, where the the different classes (y_true==0 and y_true==1) are plotted in different colors.
     Limitations: Does not work for samples, that can be part of multiple classes (e.g. multilabel classification).
 
     Parameters
@@ -288,15 +292,19 @@ def plot_y_prob_histogram(
     Figure
         The figure of the histogram plot.
     """
-    
+
     num_classes = y_true.shape[-1]
     class_labels = [f"Class {i}" for i in range(num_classes)]
-    
+
     cmap, colors = get_cmap("roma", n_colors=2)  # 2 colors for y==0 and y==1 per class
-    
+
     # Aiming for a square plot
-    plot_cols = np.ceil(np.sqrt(num_classes)).astype(int)  # Number of plots in a row # noqa
-    plot_rows = np.ceil(num_classes / plot_cols).astype(int)  # Number of plots in a column # noqa
+    plot_cols = np.ceil(np.sqrt(num_classes)).astype(
+        int
+    )  # Number of plots in a row # noqa
+    plot_rows = np.ceil(num_classes / plot_cols).astype(
+        int
+    )  # Number of plots in a column # noqa
     fig, axes = plt.subplots(
         nrows=plot_rows,
         ncols=plot_cols,
