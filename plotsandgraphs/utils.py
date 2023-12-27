@@ -1,4 +1,4 @@
-from typing import Optional, List, Callable, Dict, Tuple, TYPE_CHECKING
+from typing import Optional, List, Callable, Dict, Tuple, TYPE_CHECKING, Any
 from tqdm import tqdm
 from sklearn.utils import resample
 import numpy as np
@@ -133,7 +133,7 @@ def _set_black_title_box(
 
 
 def set_black_title_boxes(
-    axes: "np.ndarray[Axes]",
+    axes: "np.ndarray[Any, Axes]",
     titles: List[str],
     backgroundcolor="black",
     color="white",

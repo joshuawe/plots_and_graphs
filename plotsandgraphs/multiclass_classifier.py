@@ -262,8 +262,8 @@ def plot_roc_curve(
         fig_aurocs.savefig(path, bbox_inches="tight")
     # save roc curves plot
     if save_fig_path is not None:
-        path = save_fig_path[0] if split_plots is True else save_fig_path
-        path = Path(path)
+        path = save_fig_path[0] if split_plots is True else save_fig_path # type: ignore 
+        path = Path(path) # type: ignore
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, bbox_inches="tight")
     return fig, fig_aurocs

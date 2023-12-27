@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any, Union
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgba
 from matplotlib.figure import Figure
@@ -469,7 +469,7 @@ def plot_calibration_curve(
 
 
 def plot_y_score_histogram(
-    y_true: Optional[np.ndarray], y_score: np.ndarray = None, save_fig_path=None
+    y_true: Union[np.ndarray[Any, Any], None], y_score: np.ndarray[Any, Any], save_fig_path=None
 ) -> Figure:
     """
     Provides a histogram for the predicted probabilities of a binary classifier. If ```y_true``` is provided, it divides the ```y_score``` values into the two classes and plots them jointly into the same plot with different colors.
