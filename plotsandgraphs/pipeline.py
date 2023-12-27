@@ -61,7 +61,7 @@ def binary_classifier(y_true, y_score, save_fig_path=None, plot_kwargs={}, file_
 
 
 
-def multiclass_classifier(y_true, y_score, save_fig_path=None, plot_kwargs={}):
+def multiclass_classifier(y_true, y_score, save_fig_path=None, plot_kwargs={}, file_type:FILE_ENDINGS = 'png'):
     
     # Create new tqdm instance
     tqdm_instance = tqdm(total=6, desc='Binary classifier metrics', leave=True)
@@ -71,7 +71,8 @@ def multiclass_classifier(y_true, y_score, save_fig_path=None, plot_kwargs={}):
     
     # 1) Plot ROC curve
     roc_kwargs = plot_kwargs.get('roc', {})
-    mc.plot_roc_curve(y_true, y_score, save_fig_path=save_fig_path, **roc_kwargs)
+    save_path = get_file_path(save_fig_path, 'roc_curve', '')
+    mc.plot_roc_curve(y_true, y_score, save_fig_path=save_path, **roc_kwargs)
     tqdm_instance.update()
     
     # 2) Plot precision-recall curve
@@ -96,7 +97,8 @@ def multiclass_classifier(y_true, y_score, save_fig_path=None, plot_kwargs={}):
     
     # 6) Plot y_score histogram
     hist_kwargs = plot_kwargs.get('hist', {})
-    mc.plot_y_score_histogram(y_true, y_score, save_fig_path=save_fig_path, **hist_kwargs)
+    save_path = get_file_path(save_fig_path, 'y_score_histogram', file_type)
+    mc.plot_y_score_histogram(y_true, y_score, save_fig_path=save_path, **hist_kwargs)
     tqdm_instance.update()
     
     return

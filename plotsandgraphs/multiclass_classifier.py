@@ -31,7 +31,7 @@ def plot_roc_curve(
     n_bootstraps: int = 1,
     figsize: Optional[Tuple[float, float]] = None,
     class_labels: Optional[List[str]] = None,
-    split_plots: bool = True,
+    split_plots: bool = False,
     save_fig_path:Optional[Union[str, Tuple[str, str]]] = None,
 ) -> Tuple[Figure, Union[Figure, None]]:
     """
@@ -59,7 +59,7 @@ def plot_roc_curve(
     class_labels : List[str], optional
         The labels of the classes. By default None.
     split_plots : bool, optional
-        Whether to split the plots into two separate figures. By default True.
+        Whether to split the plots into two separate figures. By default False.
     save_fig_path : Optional[Union[str, Tuple[str, str]]], optional
         Path to folder where the figure(s) should be saved. If None then plot is not saved, by default None. If `split_plots` is False, then a single str is required. If True, then a tuple of strings (Pos 1 Roc curves comparison, Pos 2 AUROCs comparison). E.g. `save_fig_path=('figures/roc_curves.png', 'figures/aurocs_comparison.png')`.
 
